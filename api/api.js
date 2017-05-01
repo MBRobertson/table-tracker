@@ -3,6 +3,11 @@ var api = express.Router();
 
 var beacons = {};
 
+api.get("/reset", function(req, res) {
+    beacons = {};
+    res.json({ success: true });
+})
+
 api.get("/enter/:beacon", function(req, res) {
     if (req.params.beacon)
     {
