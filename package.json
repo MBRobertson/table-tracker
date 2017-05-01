@@ -1,12 +1,22 @@
 {
-  "name": "openshift-cartridge-nodejs-template",
-  "version": "1.0.1",
-  "description": "Custom Node.js cartridge for OpenShift - sample application",
-  "private": true,
-  "main": "start.js",
+  "name": "interact-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
   "scripts": {
-    "start": "node --use_strict start.js"
+    "start": "node app.js"
   },
-  "author": "Ionut-Cristian Florescu <ionut.florescu@gmail.com>",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://MBRobertson@gitlab.com/MBRobertson/interact-server.git"
+  },
+  "author": "Michael Robertson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/MBRobertson/interact-server/issues"
+  },
+  "homepage": "https://gitlab.com/MBRobertson/interact-server#README",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
 }
