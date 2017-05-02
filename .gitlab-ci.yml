@@ -1,0 +1,23 @@
+# This file is a template, and might need editing before it works on your project.
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+image: node:latest
+
+cache:
+  paths:
+  - node_modules/
+
+before_script:
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$OPENSHIFT_SSH")
+
+test:
+  script:
+   - npm install
+   - npm start
+
+deploy:
+  script:
+   - git remote add openshift $OPENSHIFT_REPO
+   - git push openshift master
