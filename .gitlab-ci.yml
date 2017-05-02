@@ -17,11 +17,13 @@ before_script:
   - ssh-add <(echo "$OPENSHIFT_SSH")
 
 test:
+  stage: test
   script:
    - npm install
    - npm start
 
 deploy:
+  stage: deploy
   script:
    - git remote add openshift $OPENSHIFT_REPO
    - git push openshift master
