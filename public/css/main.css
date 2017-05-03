@@ -41,14 +41,15 @@ h1
 .used
 {
     float: right;
-}
-.inuse
-{
     color: rgb(0, 150, 0);
 }
 .free
 {
     color: rgb(150, 0, 0);
+}
+.wait
+{
+    color: rgb(180, 120, 0);
 }
 
 .indicator
@@ -66,4 +67,8 @@ h1
 .free>.indicator
 {
     background-color: rgb(180, 0, 0);
+}
+.wait>.indicator
+{
+    background-color: rgb(200, 150, 0);
 }
