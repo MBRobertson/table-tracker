@@ -14,7 +14,11 @@ api.get("/reset", function(req, res) {
 api.get("/enter/:beacon", function(req, res) {
     if (req.params.beacon)
     {
-        beacons[req.params.beacon] = true;
+        for (var beacon in beacons)
+        {
+            beacons[beacon] = 0;
+        }
+        beacons[req.params.beacon] = 1;
         res.json({ success: true });
     }
     else
@@ -26,7 +30,7 @@ api.get("/enter/:beacon", function(req, res) {
 api.get("/leave/:beacon", function(req, res) {
     if (req.params.beacon)
     {
-        beacons[req.params.beacon] = false;
+        beacons[req.params.beacon] = -1;
         res.json({ success: true });
     }
     else
