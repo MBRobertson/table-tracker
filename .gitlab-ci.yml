@@ -28,5 +28,3 @@ deploy:
   script:
    - git remote add openshift $OPENSHIFT_REPO
    - git push openshift master
-   only:
-   - master
