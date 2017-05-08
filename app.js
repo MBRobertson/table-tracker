@@ -5,6 +5,8 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
+var db = require("./api/db/db.js");
+
 var api = require("./api/api.js");
 
 app.use("/api", api.router);
@@ -16,7 +18,10 @@ app.get("/", function(req, res) {
 app.use(express.static("public"));
 
 io.on('connection', function (socket) {
-    socket.emit('update', api.getBeaconInfo());
+    db.getBeacons(function(data) {
+        socket.emit('update', data);
+    })
+    
     // socket.on('my other event', function (data) {
     //       console.log(data);
     // });

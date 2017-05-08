@@ -1,7 +1,7 @@
 var express = require("express");
 var api = express.Router();
+var db = require("./db/db.js");
 
-var beacons = {};
 var updateHandler = null;;
 
 api.get("/reset", function(req, res) {
@@ -11,32 +11,20 @@ api.get("/reset", function(req, res) {
     onBeaconUpdate(beacons);
 })
 
-api.get("/enter/:beacon", function(req, res) {
-    if (req.params.beacon)
+api.get("/enter/:identity/:beacon", function(req, res) {
+    db.deviceEnter(req.params.identity, req.params.beacon, function(data)
     {
-        for (var beacon in beacons)
-        {
-            beacons[beacon] = 0;
-        }
-        beacons[req.params.beacon] = 1;
-        res.json({ success: true });
-    }
-    else
-        res.json({ success: false, error: "Missing beacon parameter" });
-    
-    onBeaconUpdate(beacons);
+        onBeaconUpdate(data);
+    })
+    res.json({ success: true });
 })
 
-api.get("/leave/:beacon", function(req, res) {
-    if (req.params.beacon)
+api.get("/leave/:identity/:beacon", function(req, res) {
+    db.deviceLeave(req.params.identity, req.params.beacon, function(data)
     {
-        beacons[req.params.beacon] = -1;
-        res.json({ success: true });
-    }
-    else
-        res.json({ success: false, error: "Missing beacon parameter" });
-    
-    onBeaconUpdate(beacons);
+        onBeaconUpdate(data);
+    })
+    res.json({ success: true });
 })
 
 getBeaconInfo = function() {
@@ -51,7 +39,6 @@ function onBeaconUpdate(beacons)
 
 module.exports = {
     "router": api,
-    "getBeaconInfo": getBeaconInfo,
     "onBeaconUpdate": function(func) {
         updateHandler = func;
     }
