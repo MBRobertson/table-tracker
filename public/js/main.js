@@ -7,17 +7,17 @@ socket.on('update', function(data) {
     {
         var usage = "free";
         var text = "Nothing Nearby";
-        if (data[b] == 0)
-        {
-            usage = "wait";
-            text = "Phone Nearby";
-        }
-        else if (data[b] == 1)
+        // if (data[b] == 0)
+        // {
+        //     usage = "wait";
+        //     text = "Phone Nearby";
+        // }
+        if (data[b].devices.length >= 1)
         {
             usage = "";
-            text = "Phone Nearby";
+            text = data[b].devices.join() + " Nearby";
         }
-        $('.beacon-list').append("<li class='beacon'><span class='id'>" + b + "</span><span class='used " + usage + "'><span class='indicator'></span>" + text + "<span></li>")
+        $('.beacon-list').append("<li class='beacon'><span class='id'>" + data[b].beacon + "</span><span class='used " + usage + "'><span class='indicator'></span>" + text + "<span></li>")
     }
     if ($('.beacon').length == 0)
     {
