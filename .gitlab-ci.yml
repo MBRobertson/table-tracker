@@ -3,9 +3,6 @@
 # https://hub.docker.com/r/library/node/tags/
 image: node:latest
 
-only:
-  - master
-
 stages:
 #   - test
    - deploy
@@ -31,3 +28,5 @@ deploy:
   script:
    - git remote add openshift $OPENSHIFT_REPO
    - git push openshift master
+  only:
+   - master
