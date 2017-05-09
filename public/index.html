@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-grid.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <script type="text/javascript" src="js/bootstrap.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <title>Best Seats</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3" id="menubody">
+                    <h1 id="header">Best Seats</h1>
+                    <hr>
+                    <button class="button" id="reserve">Reserve Tables</button>
+                    
+                    <button id="storelogin" class="button">Store Login</button>
+                </div> 
+                <div class="col-lg-9" id="rightbody">
+                    <hr style="display: none">
+                    <p id="table" style="display: none">Please Select a Table</p>
+                    <hr style="display: none">
+                </div>
+                
+                <script>
+                        $("#storelogin").click(function() {
+                            var pin = prompt("Enter Store Pin: ");
+                            if(pin == "1234") {
+                                window.location.replace("store.html")
+                                   
+                            }
+                            else alert("Incorrect Pin");
+                        });
+                    
+                        $("#reserve").click(function() {
+                           
+                            var phnum = prompt("Please enter your Metro Plaza username: ");
+                            if(phnum == "") alert("Please enter a username");
+                            else
+                            {
+                                $("#table").css("display", "flex")
+                                $("hr").css("display", "flex")
+                                $("#rightbody").click(function() {
+                                    alert(event.pageX + ":" + event.pageY);                                    
+                                });
+                            };
+                        });
+                        
+                    </script>
+                
+            </div>
+        </div>
+    </body>
+</html>
