@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-grid.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <script type="text/javascript" src="js/bootstrap.js"></script>   
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/tables.js"></script>
+        <title>Best Seats</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3" id="menubody">
+                    <h1 id="header">Best Seats</h1>
+                    <hr>
+                    <button id="addtable" class="button">Add Table</button>
+                    <button id="removetable" class="button">Remove Table</button>
+                    <a href="index.html"><button id="storelogin" class="button">Log Out</button></a>
+                </div> 
+                <div class="col-lg-9" id="rightbody">
+                    
+                    <script>
+                        var count = 0;
+                        
+                        $("#addtable").click(function(){
+                            $("#rightbody").click(function() {
+                                var elm = $("#rightbody");
+                                var Xpos = event.pageX - elm.offset().left;
+                                var Ypos = event.pageY - elm.offset().top;
+                                count++;
+                                $("#rightbody").append("<img class='tableimg' id='0' width='100px' src='img/table.png'></img>");
+                                $("#0").css({
+                                    "margin":"2px",
+                                    "position" : "absolute",
+                                    "left" : (Xpos - 25),
+                                    "top" : (Ypos - 25)
+                                    
+                                });
+                                tables.push(count);
+                                tables.push(Xpos);
+                                tables.push(Ypos);
+                                $("#0").attr('id', count);
+                            }); 
+                            return;
+                        });
+                        
+                        $("#removetable").click(function(){
+                            $("#rightbody").click(function(){
+                                var elm = $("#rightbody");
+                                var Xpos = event.pageX - elm.offset().left;
+                                var Ypos = event.pageY - elm.offset().top;
+                                var index = 0;
+                                while(hasElement(tables, Xpos) && hasElement(tables, Ypos)) {
+                                    index++;
+                                    var pass = true;
+                                }
+                                if(pass){
+                                    removeElement(tables, index)
+                                    $("#"+index).css({"display" : "hidden"});
+                                }
+                                
+                            });
+                            return;
+                        });
+                        
+                        function removeElement(tables, index) {
+                            for(var i = 0; i <= index; i++);
+                            tales.splice(i, 3);
+                            return;
+                        }
+                        
+                        function hasElement(tables, key) {
+                            for (var i = 0; i < tables.length; i++) {
+                                if(tables[i] < (key + 50) && tables[i] > (key - 50)) {
+                                    return true
+                                }
+                                
+                            } 
+                            return false;
+                        }
+                        
+                    </script>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
