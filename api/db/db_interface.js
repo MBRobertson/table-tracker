@@ -5,7 +5,7 @@ var config = {
   database: 'interact',
   password: process.env.OPENSHIFT_POSTGRESQL_DB_PASSWORD || 'doorframe',
   host: process.env.OPENSHIFT_POSTGRESQL_DB_HOST || "192.168.56.20",
-  port: process.env.OPENSHIFT_POSTGRESQL_DB_HOST || 5432,
+  port: process.env.OPENSHIFT_POSTGRESQL_DB_PORT || 5432,
   max: 10, // max number of clients in the pool
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 };
