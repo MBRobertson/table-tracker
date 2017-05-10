@@ -18,8 +18,14 @@ app.get("/", function(req, res) {
 app.use(express.static("public"));
 
 io.on('connection', function (socket) {
-    db.getBeacons(function(data) {
-        socket.emit('update', data);
+    db.getBeacons(function(err, data) {
+
+        socket.emit('update', data.rows);
+    })
+
+    db.getDevices(function(err, data) {
+
+        socket.emit('deviceupdate', data.rows);
     })
     
     // socket.on('my other event', function (data) {
@@ -29,6 +35,11 @@ io.on('connection', function (socket) {
 
 api.onBeaconUpdate(function(beaconData) {
     io.emit('update', beaconData);
+
+    db.getDevices(function(err, data) {
+
+        io.emit('deviceupdate', data.rows);
+    })
 })
 
 var port = process.env.OPENSHIFT_NODEJS_PORT || 3000

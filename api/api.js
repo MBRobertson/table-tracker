@@ -1,28 +1,30 @@
 var express = require("express");
 var api = express.Router();
-var db = require("./db/db.js");
+var db = require("./db/db");
 
 var updateHandler = null;;
 
 api.get("/reset", function(req, res) {
-    beacons = {};
+    db.reset(function() {
+        db.getBeacons(function(err, data) {
+            onBeaconUpdate(data.rows);
+        })
+    })
     res.json({ success: true });
-
-    onBeaconUpdate(beacons);
 })
 
 api.get("/enter/:identity/:beacon", function(req, res) {
-    db.deviceEnter(req.params.identity, req.params.beacon, function(data)
+    db.deviceEnter(req.params.identity, req.params.beacon, function(err, data)
     {
-        onBeaconUpdate(data);
+        onBeaconUpdate(data.rows);
     })
     res.json({ success: true });
 })
 
 api.get("/leave/:identity/:beacon", function(req, res) {
-    db.deviceLeave(req.params.identity, req.params.beacon, function(data)
+    db.deviceLeave(req.params.identity, req.params.beacon, function(err, data)
     {
-        onBeaconUpdate(data);
+        onBeaconUpdate(data.rows);
     })
     res.json({ success: true });
 })
