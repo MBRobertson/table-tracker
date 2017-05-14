@@ -15,7 +15,7 @@ api.get("/reset", function(req, res) {
 
 api.get("/beacons", function(req, res) {
     db.getBeacons(function(err, data) {
-        res.json(data);
+        res.json(data.rows);
     })
 })
 
