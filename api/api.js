@@ -11,6 +11,12 @@ api.get("/reset", function(req, res) {
         })
     })
     res.json({ success: true });
+});
+
+api.get("/beacons", function(req, res) {
+    db.getBeacons(function(err, data) {
+        res.json(data);
+    })
 })
 
 api.get("/enter/:identity/:beacon", function(req, res) {
