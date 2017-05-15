@@ -6,9 +6,42 @@
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <script type="text/javascript" src="js/bootstrap.js"></script>
         <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/api.js"></script>
+        
         <title>Best Seats</title>
     </head>
     <body>
+  
+        <script>
+            
+            
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    myObj = JSON.parse(this.responseText);
+                    var length = myObj.tables.length;
+                    for(var index = 0; index < length; index++){
+                        var ID = myObj.tables[index].ID;
+                        var xpos = myObj.tables[index].xpos;
+                        var ypos = myObj.tables[index].ypos;
+                        $("#rightbody").append("<img class='tableimg' id='0' width='100px' src='img/table.png'></img>");
+                                    $("#0").css({
+                                        "margin":"2px",
+                                        "position" : "absolute",
+                                        "left" : (xpos - 25),
+                                        "top" : (ypos - 25)
+                                    });
+
+                                    $("#0").attr('id', ID);
+
+                    }
+                }
+            };
+            xmlhttp.open("GET", "beacons.json", true);
+            xmlhttp.send();
+            
+            
+        </script>
         <div class="container">
             <div class="row">
                 <div class="col-lg-3" id="menubody">
@@ -26,26 +59,20 @@
                 
                 <script>
                         $("#storelogin").click(function() {
-                            var pin = prompt("Enter Store Pin: ");
-                            if(pin == "1234") {
+          
                                 window.location.replace("store.html")
-                                   
-                            }
-                            else alert("Incorrect Pin");
+    
                         });
                     
                         $("#reserve").click(function() {
                            
-                            var phnum = prompt("Please enter your Metro Plaza username: ");
-                            if(phnum == "") alert("Please enter a username");
-                            else
-                            {
+
                                 $("#table").css("display", "flex")
                                 $("hr").css("display", "flex")
                                 $("#rightbody").click(function() {
                                     alert(event.pageX + ":" + event.pageY);                                    
                                 });
-                            };
+                            
                         });
                         
                     </script>
