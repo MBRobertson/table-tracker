@@ -72,3 +72,25 @@ h1
 {
     background-color: rgb(200, 150, 0);
 }
+
+.beacon-list {
+    position: relative;
+    background-color: rgb(220, 220, 220);
+    height: 650px;
+    border-radius: 5px;
+}
+.table {
+    position: absolute;
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    border: 1px solid rgb(0, 60, 0);
+    background-color: rgb(0, 150, 0);
+    opacity: 0.2;
+}
+.claimed
+{
+    border: 1px solid rgb(60, 00, 0);
+    background-color: rgb(160, 0, 0);
+}

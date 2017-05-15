@@ -1,32 +1,31 @@
 var socket = io.connect();
 
+var beacons = null;
+var devices = null;
+
 socket.on('update', function(data) {
-    console.log(data);
-    $('.beacon').remove();
-    for (var b in data)
-    {
-        var usage = "wait";
-        var text = "WIP";
-        // if (data[b] == 0)
-        // {
-        //     usage = "wait";
-        //     text = "Phone Nearby";
-        // }
-        // if (data[b].devices.length >= 1)
-        // {
-        //     usage = "";
-        //     text = data[b].devices.join() + " Nearby";
-        // }
-        $('.beacon-list').append("<li class='beacon " + data[b].region + "'><span class='id'>" + data[b].name + "</span><span class='used " + usage + "'><span class='indicator'></span>" + text + "<span></li>")
-    }
-    if ($('.beacon').length == 0)
-    {
-        $('.beacon-list').append("<li class='beacon no-beacons'>No beacons registered</li>")
-    }
+    beacons = data;
+    redraw();
 })
 
 socket.on('deviceupdate', function(data) {
-    data.forEach(function(device) {
-        $('.' + device.beacon).append("<p>" + device.device + "</p>");
-    }, this);
+    devices = data;
+    redraw();
 })
+
+scale=25;
+
+function redraw() {
+    if (beacons && devices)
+    {
+        $('.beacon-list').empty();
+        beacons.forEach(function(table) {
+            $('.beacon-list').append(`<li id='` + table.region + `' class='table' style='left: ` + (table.x * scale - 50) + `px; top: ` + (table.y * scale - 50) + `px;'>
+            
+            </li>`)
+        }, this);
+        devices.forEach(function(device) {
+            $('#' + device.beacon).addClass('claimed');
+        })
+    }
+}
