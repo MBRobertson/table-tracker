@@ -9,6 +9,14 @@ db.query("SELECT * FROM beacons", [], function(err, res) {
     //console.log("Successfully made query", res);
 })
 
+module.exports.reset = function(callback) {
+    db.query("DELETE FROM devices WHERE TRUE", [], function(err) {
+        if (err)
+            console.error("Error: ", err);
+        module.exports.getBeacons(callback);
+    })
+}
+
 module.exports.getBeacons = function(callback) {
     db.query("SELECT * FROM beacons", [], callback);
     console.log("Getting beacons");
@@ -26,6 +34,22 @@ module.exports.deviceEnter = function(device, beacon, callback) {
             module.exports.getBeacons(callback);
         });
     });
+}
+
+module.exports.addBeacon = function(name, region, x, y, callback) {
+    db.query("INSERT INTO beacons(name, region, x, y) VALUES ($1::text, $2, $3::int, $4::int)", [name, region, x, y], function(err) {
+        if (err)
+            console.error("Error: ", err);
+        module.exports.getBeacons(callback);
+    })
+}
+
+module.exports.deleteBeacon = function(id, callback) {
+    db.query("DELETE FROM beacons WHERE \"ID\"=$1::int", [id], function(err, data) {
+        if (err)
+            console.error("Error: ", err);
+        module.exports.getBeacons(callback);
+    })
 }
 
 module.exports.deviceLeave = function(device, beacon, callback) {

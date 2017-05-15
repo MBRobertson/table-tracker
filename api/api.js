@@ -2,13 +2,17 @@ var express = require("express");
 var api = express.Router();
 var db = require("./db/db");
 
-var updateHandler = null;;
+var updateHandler = null;
+
+api.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 api.get("/reset", function(req, res) {
-    db.reset(function() {
-        db.getBeacons(function(err, data) {
-            onBeaconUpdate(data.rows);
-        })
+    db.reset(function(err, data) {
+        onBeaconUpdate(data.rows);
     })
     res.json({ success: true });
 });
@@ -17,6 +21,37 @@ api.get("/beacons", function(req, res) {
     db.getBeacons(function(err, data) {
         res.json(data.rows);
     })
+})
+
+api.put('/beacons', function(req, res) {
+    var name =  req.body.name, 
+        region = req.body.region, 
+        x = parseInt(req.body.x), 
+        y = parseInt(req.body.y);
+    console.log(name, region, x, y);
+    if (name  && region && x && y)
+    {
+        console.log("Putting");
+        db.addBeacon(name, region, x, y, function(err, data) {
+            if (err)
+                console.error("Error :", err);
+            onBeaconUpdate(data.rows);
+        })
+    }
+    res.json({success: true});
+})
+
+api.delete("/beacons", function(req, res) {
+    var id = req.body.id;
+    if (id)
+    {
+        db.deleteBeacon(id, function(err, data) {
+            if (err)
+                console.error("Error :", err);
+            onBeaconUpdate(data.rows);  
+        });
+    }
+    res.json({ success: true });
 })
 
 api.get("/enter/:identity/:beacon", function(req, res) {
@@ -44,6 +79,8 @@ function onBeaconUpdate(beacons)
     if (updateHandler)
         updateHandler(beacons);
 }
+
+
 
 module.exports = {
     "router": api,
