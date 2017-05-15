@@ -3,11 +3,15 @@ var path = require("path");
 var express = require("express");
 var app = express();
 var server = require('http').Server(app);
+var bodyParser = require('body-parser');
 var io = require('socket.io')(server);
 
 var db = require("./api/db/db.js");
 
 var api = require("./api/api.js");
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 app.use("/api", api.router);
 
@@ -27,10 +31,6 @@ io.on('connection', function (socket) {
 
         socket.emit('deviceupdate', data.rows);
     })
-    
-    // socket.on('my other event', function (data) {
-    //       console.log(data);
-    // });
 });
 
 api.onBeaconUpdate(function(beaconData) {
