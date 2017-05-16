@@ -59,7 +59,7 @@ api.delete("/beacons", function(req, res) {
     res.json({ success: true });
 })
 
-api.get("/devices", function(err, data) {
+api.get("/devices", function(req, res) {
     db.getDevices(function(err, data) {
         if (err)
             res.json({ success: false });
