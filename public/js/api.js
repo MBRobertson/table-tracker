@@ -2,7 +2,7 @@ var API_SERVER = "http://interact-comp241.rhcloud.com";
 //var API_SERVER = "";
 
 var API = {
-    'addTable': function(name, region, x, y, callback) {
+    'addTable': function (name, region, x, y, callback) {
         $.ajax({
             url: API_SERVER + '/api/beacons',
             type: 'PUT',
@@ -12,9 +12,9 @@ var API = {
                 x: parseInt(x),
                 y: parseInt(y)
             }
-        }).done(function(res) {
+        }).done(function (res) {
             if (callback)
-                callback(res);
+                callback (res);
         }).fail(function(err) {
             console.error(err);
         });
