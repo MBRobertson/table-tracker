@@ -43,5 +43,16 @@ var API = {
         }).fail(function(err) {
             console.error(err);
         });
+    },
+    'getDevices': function(callback) {
+        $.ajax({
+            url: API_SERVER + '/api/devices',
+            type: 'GET'
+        }).done(function(res) {
+            if (callback)
+                callback(res);
+        }).fail(function(err) {
+            console.error(err);
+        });
     }
 }

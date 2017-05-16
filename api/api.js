@@ -59,6 +59,15 @@ api.delete("/beacons", function(req, res) {
     res.json({ success: true });
 })
 
+api.get("/devices", function(err, data) {
+    db.getDevices(function(err, data) {
+        if (err)
+            res.json({ success: false });
+        else
+            res.json(data.rows);
+    })
+})
+
 api.get("/enter/:identity/:beacon", function(req, res) {
     db.deviceEnter(req.params.identity, req.params.beacon, function(err, data)
     {
