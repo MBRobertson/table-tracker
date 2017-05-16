@@ -1,11 +1,13 @@
+
 <!DOCTYPE html>
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="css/bootstrap-grid.css">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">
-        <script type="text/javascript" src="js/bootstrap.js"></script>   
-        <script type="text/javascript" src="js/jquery.min.js"></script>
+         
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.js"></script>  
         <script type="text/javascript" src="js/api.js"></script>
         
         <title>Best Seats</title>
@@ -21,85 +23,98 @@
                     <a href="index.html"><button id="storelogin" class="button">Log Out</button></a>
                 </div> 
                 <div class="col-lg-9" id="rightbody">
+                    
                     <script>
-            
-            
-                        var xmlhttp = new XMLHttpRequest();
-                        xmlhttp.onreadystatechange = function() {
-                            if (this.readyState == 4 && this.status == 200) {
-                                myObj = JSON.parse(this.responseText);
-                                var length = myObj.tables.length;
-                                for(var index = 0; index < length; index++){
-                                    var ID = myObj.tables[index].ID;
-                                    var xpos = myObj.tables[index].xpos;
-                                    var ypos = myObj.tables[index].ypos;
-                                    $("#rightbody").append("<img class='tableimg' id='0' width='100px' src='img/table.png'></img>");
-                                                $("#0").css({
-                                                    "margin":"2px",
-                                                    "position" : "absolute",
-                                                     "z-index" : "2",
-                                                    "left" : (xpos - 25),
-                                                    "top" : (ypos - 25)
-                                                });
+                        
+                        var xpos;
+                        var ypos;
+                        var ID;
+                         var passremove = false;
+                        
+                        $("#removetable").click(function(){
+                            passremove = true;
+                        });
+                        function getTables() {
+                            API.getTables(function(tables) {
+                                $('.tableimg').remove();
+                                tables.forEach(function(table) {
+                                    xpos = table.x;
+                                    ypos = table.y;
+                                    ID = table.ID;
 
-                                                $("#0").attr('id', ID);
+                            var element = $("<li class='tableimg' id='" + ID + "' width='100px'></li>");
 
+                            element.appendTo("#rightbody");
+                            element.css({
+
+                                    "left" : (xpos - 50),
+                                    "top" : (ypos - 50)
+                                });
+
+                            element.attr('id', ID);
+                                    
+                            element.click(function() {
+                                if(passremove == true){
+                                var ID = $(this).prop("id");
+                                API.removeTable(parseInt(ID), function() {
+                                    
+                                    getTables();
+                                })
                                 }
-                            }
-                        };
-                        xmlhttp.open("GET", "beacons.json", true);
-                        xmlhttp.send();
-
-
+                                passremove = false;
+                            })
+                            });
+                                 });
+                        }
+                        getTables();
                     </script>
                     <script>
                         /*To remove have an onclick function for the class tableimg, use this. whatever and set display to hidden*/
                         var count = 0;
+                        var region;
                         var passadd = false;
                         $("#addtable").click(function(){
                             passadd = true;
+                            region = prompt("Enter Region ID:")
+                            $("#rightbody").css({
+                                    "cursor" : "url(img/tablecursor.png) 50 50, auto"
+                                });
                         });
                         
                         $("#rightbody").click(function(event) {
+                           $("#rightbody").css({
+                                    "cursor" : "inherit"
+                                });
                             if(passadd == true) {
+                                
                                 var elm = $("#rightbody");
                                 var Xpos = event.pageX - elm.offset().left;
                                 var Ypos = event.pageY - elm.offset().top;
                                 count++;
-                                $("#rightbody").append("<img class='tableimg' id='0' width='100px' src='img/table.png'></img>");
-                                $("#0").css({
-                                    "margin":"2px",
-                                    "position" : "absolute",
-                                   
-                                    "left" : (Xpos - 25),
-                                    "top" : (Ypos - 25)
-                                });
+                                var element = $("<li class='tableimg' id='0' onclick='tableremove' width='100px'></li>");
+                                element.appendTo("#rightbody");
+                                    element.css({
+                                        "left" : (Xpos - 50),
+                                        "top" : (Ypos - 50)
+                                    });
 
-                                $("#0").attr('id', count);
+                                    element.attr('id', count);
+                                    API.addTable("Table " + count, region, Xpos, Ypos, function() {
+                                        
+                                        getTables();
+                                    })
                             }
-                            
                             passadd = false
+                            
                             return;
                         }); 
                                     
+            </script>
             
                         
-                        
-                        
-                    </script>
+                    
                 </div>
-                <script>
                 
-//                        var passremove = false;
-//                        
-//                        $("#removetable").click(function(){
-//                            passremove = true;
-//                        });
-                        
-                        $("#1").click(function(){
-                            alert("End of Processing");
-                        });
-                </script>
             </div>
         </div>
     </body>

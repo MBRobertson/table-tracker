@@ -4,8 +4,9 @@
         <link rel="stylesheet" type="text/css" href="css/bootstrap-grid.css">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">
+        
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script>
-        <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/api.js"></script>
         
         <title>Best Seats</title>
@@ -13,35 +14,28 @@
     <body>
   
         <script>
-            
-            
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    myObj = JSON.parse(this.responseText);
-                    var length = myObj.tables.length;
-                    for(var index = 0; index < length; index++){
-                        var ID = myObj.tables[index].ID;
-                        var xpos = myObj.tables[index].xpos;
-                        var ypos = myObj.tables[index].ypos;
-                        $("#rightbody").append("<img class='tableimg' id='0' width='100px' src='img/table.png'></img>");
-                                    $("#0").css({
-                                        "margin":"2px",
-                                        "position" : "absolute",
-                                        "left" : (xpos - 25),
-                                        "top" : (ypos - 25)
-                                    });
+            var xpos;
+            var ypos;
+            var ID;
+            API.getTables(function(tables) {
+                tables.forEach(function(table) {
+                    xpos = table.x;
+                    ypos = table.y;
+                    ID = table.ID;
+                
+                var element = $("<li class='tableimg' id='0' onclick='tableremove' width='100px'></li>");
 
-                                    $("#0").attr('id', ID);
+            element.appendTo("#rightbody");
+                element.css({
+                    "left" : (xpos - 50),
+                    "top" : (ypos - 50)
+                });
 
-                    }
-                }
-            };
-            xmlhttp.open("GET", "beacons.json", true);
-            xmlhttp.send();
-            
-            
+                element.attr('id', ID);
+            });
+             });
         </script>
+        
         <div class="container">
             <div class="row">
                 <div class="col-lg-3" id="menubody">
