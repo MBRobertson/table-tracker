@@ -1,1 +1,0 @@
-var tables = new Array();

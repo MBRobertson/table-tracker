@@ -6,16 +6,28 @@
     
 }
 
+
+    
 #clickable-image {
     width: 100%;
 }
+
+
 
 #rightbody {
     border: 1px solid black;
     border-radius: 5px;
     float: right;
-    z-index: -5;
+
+    list-style-type: none; !important
     
+}
+.tableimg {
+    background-image: url(../img/table.png);
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    z-index: 5;
 }
 
 .overlay {
