@@ -19,7 +19,10 @@ api.get("/reset", function(req, res) {
 
 api.get("/beacons", function(req, res) {
     db.getBeacons(function(err, data) {
-        res.json(data.rows);
+        if (err)
+            res.json({ success: false });
+        else
+            res.json(data.rows);
     })
 })
 
@@ -35,7 +38,8 @@ api.put('/beacons', function(req, res) {
         db.addBeacon(name, region, x, y, function(err, data) {
             if (err)
                 console.error("Error :", err);
-            onBeaconUpdate(data.rows);
+            else
+                onBeaconUpdate(data.rows);
         })
     }
     res.json({success: true});
