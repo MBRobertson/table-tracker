@@ -6,7 +6,8 @@
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <script type="text/javascript" src="js/bootstrap.js"></script>   
         <script type="text/javascript" src="js/jquery.min.js"></script>
-        <script type="text/javascript" src="js/tables.js"></script>
+        <script type="text/javascript" src="js/api.js"></script>
+        
         <title>Best Seats</title>
     </head>
     <body>
@@ -20,12 +21,47 @@
                     <a href="index.html"><button id="storelogin" class="button">Log Out</button></a>
                 </div> 
                 <div class="col-lg-9" id="rightbody">
-                    
                     <script>
+            
+            
+                        var xmlhttp = new XMLHttpRequest();
+                        xmlhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                myObj = JSON.parse(this.responseText);
+                                var length = myObj.tables.length;
+                                for(var index = 0; index < length; index++){
+                                    var ID = myObj.tables[index].ID;
+                                    var xpos = myObj.tables[index].xpos;
+                                    var ypos = myObj.tables[index].ypos;
+                                    $("#rightbody").append("<img class='tableimg' id='0' width='100px' src='img/table.png'></img>");
+                                                $("#0").css({
+                                                    "margin":"2px",
+                                                    "position" : "absolute",
+                                                     "z-index" : "2",
+                                                    "left" : (xpos - 25),
+                                                    "top" : (ypos - 25)
+                                                });
+
+                                                $("#0").attr('id', ID);
+
+                                }
+                            }
+                        };
+                        xmlhttp.open("GET", "beacons.json", true);
+                        xmlhttp.send();
+
+
+                    </script>
+                    <script>
+                        /*To remove have an onclick function for the class tableimg, use this. whatever and set display to hidden*/
                         var count = 0;
-                        
+                        var passadd = false;
                         $("#addtable").click(function(){
-                            $("#rightbody").click(function() {
+                            passadd = true;
+                        });
+                        
+                        $("#rightbody").click(function(event) {
+                            if(passadd == true) {
                                 var elm = $("#rightbody");
                                 var Xpos = event.pageX - elm.offset().left;
                                 var Ypos = event.pageY - elm.offset().top;
@@ -34,55 +70,36 @@
                                 $("#0").css({
                                     "margin":"2px",
                                     "position" : "absolute",
+                                   
                                     "left" : (Xpos - 25),
                                     "top" : (Ypos - 25)
-                                    
                                 });
-                                tables.push(count);
-                                tables.push(Xpos);
-                                tables.push(Ypos);
+
                                 $("#0").attr('id', count);
-                            }); 
+                            }
+                            
+                            passadd = false
                             return;
-                        });
+                        }); 
+                                    
+            
                         
-                        $("#removetable").click(function(){
-                            $("#rightbody").click(function(){
-                                var elm = $("#rightbody");
-                                var Xpos = event.pageX - elm.offset().left;
-                                var Ypos = event.pageY - elm.offset().top;
-                                var index = 0;
-                                while(hasElement(tables, Xpos) && hasElement(tables, Ypos)) {
-                                    index++;
-                                    var pass = true;
-                                }
-                                if(pass){
-                                    removeElement(tables, index)
-                                    $("#"+index).css({"display" : "hidden"});
-                                }
-                                
-                            });
-                            return;
-                        });
                         
-                        function removeElement(tables, index) {
-                            for(var i = 0; i <= index; i++);
-                            tales.splice(i, 3);
-                            return;
-                        }
-                        
-                        function hasElement(tables, key) {
-                            for (var i = 0; i < tables.length; i++) {
-                                if(tables[i] < (key + 50) && tables[i] > (key - 50)) {
-                                    return true
-                                }
-                                
-                            } 
-                            return false;
-                        }
                         
                     </script>
                 </div>
+                <script>
+                
+//                        var passremove = false;
+//                        
+//                        $("#removetable").click(function(){
+//                            passremove = true;
+//                        });
+                        
+                        $("#1").click(function(){
+                            alert("End of Processing");
+                        });
+                </script>
             </div>
         </div>
     </body>
