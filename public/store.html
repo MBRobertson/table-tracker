@@ -36,6 +36,7 @@
                         });
                         function getTables() {
                             API.getTables(function(tables) {
+                                $('.tableimg').remove();
                                 tables.forEach(function(table) {
                                     xpos = table.x;
                                     ypos = table.y;
@@ -56,7 +57,7 @@
                                 if(passremove == true){
                                 var ID = $(this).prop("id");
                                 API.removeTable(parseInt(ID), function() {
-                                    $('.tableimg').remove();
+                                    
                                     getTables();
                                 })
                                 }
@@ -94,7 +95,7 @@
 
                                     element.attr('id', count);
                                     API.addTable("Table " + count, region, Xpos, Ypos, function() {
-                                        $('.tableimg').remove();
+                                        
                                         getTables();
                                     })
                             }
