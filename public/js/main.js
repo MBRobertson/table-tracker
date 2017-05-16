@@ -13,7 +13,7 @@ socket.on('deviceupdate', function(data) {
     redraw();
 })
 
-scale=25;
+scale=1;
 
 function redraw() {
     if (beacons && devices)
