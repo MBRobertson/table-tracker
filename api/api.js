@@ -71,7 +71,10 @@ api.get("/devices", function(req, res) {
 api.get("/enter/:identity/:beacon", function(req, res) {
     db.deviceEnter(req.params.identity, req.params.beacon, function(err, data)
     {
-        onBeaconUpdate(data.rows);
+        if (err)
+            console.error("Error: ", err)
+        else
+            onBeaconUpdate(data.rows);
     })
     res.json({ success: true });
 })
