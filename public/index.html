@@ -34,6 +34,39 @@
                 element.attr('id', ID);
             });
              });
+            
+            
+            
+            
+            var region;
+            var ID;
+            var tabletaken;
+            
+            // Can see an example of the data returned here:
+            // http://interact-comp241.rhcloud.com/api/devices
+            API.getDevices(function(devices) {
+                devices.forEach(function(tableinfo) {
+                    // The table region that the device is near
+                    tabletaken = tableinfo.beacon;
+                    API.getTables(function(tables){
+                        tables.forEach(function(table){
+                            region = table.region;
+                            ID = table.ID;
+                                if(region == tabletaken){
+                                    $("#" + ID).css({
+                                       "backgroundImage" : "url(../img/tablered.png)"
+                                    });
+                                }
+                        });
+                    });
+                    
+                });
+            });
+            
+            
+            
+            
+            
         </script>
         
         <div class="container">
