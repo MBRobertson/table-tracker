@@ -21,7 +21,7 @@
                 tables.forEach(function(table) {
                     xpos = table.x;
                     ypos = table.y;
-                    ID = table.ID;
+                    region = table.region;
                 
                 var element = $("<li class='tableimg' id='0' onclick='tableremove' width='100px'></li>");
 
@@ -31,7 +31,7 @@
                     "top" : (ypos - 50)
                 });
 
-                element.attr('id', ID);
+                element.attr('id', region);
             });
              });
             
@@ -46,19 +46,22 @@
             // http://interact-comp241.rhcloud.com/api/devices
             API.getDevices(function(devices) {
                 devices.forEach(function(tableinfo) {
-                    // The table region that the device is near
-                    tabletaken = tableinfo.beacon;
-                    API.getTables(function(tables){
-                        tables.forEach(function(table){
-                            region = table.region;
-                            ID = table.ID;
-                                if(region == tabletaken){
-                                    $("#" + ID).css({
+                    $("#" + tableinfo.beacon).css({
                                        "backgroundImage" : "url(../img/tablered.png)"
                                     });
-                                }
-                        });
-                    });
+                    // The table region that the device is near
+//                    tabletaken = tableinfo.beacon;
+//                    API.getTables(function(tables){
+////                        tables.forEach(function(table){
+////                            region = table.region;
+////                            ID = table.ID;
+//                                if(region == tabletaken){
+//                                    $("#" + region).css({
+//                                       "backgroundImage" : "url(../img/tablered.png)"
+//                                    });
+//                                }
+////                        });
+//                    });
                     
                 });
             });
