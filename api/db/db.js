@@ -27,13 +27,13 @@ module.exports.getDevices = function(callback) {
 }
 
 module.exports.deviceEnter = function(device, beacon, callback) {
-    db.query("DELETE FROM devices WHERE device=$1::text", [device], function() {
+    //db.query("DELETE FROM devices WHERE device=$1::text", [device], function() {
         db.query("INSERT INTO devices(beacon, device, time) VALUES ($1, $2::text, $3)", [beacon, device, new Date()], function(err) {
             if (err)
                 console.error("Error: ", err);
             module.exports.getBeacons(callback);
         });
-    });
+    //});
 }
 
 module.exports.addBeacon = function(name, region, x, y, callback) {
