@@ -24,7 +24,7 @@ app.use(express.static("public"));
 io.on('connection', function (socket) {
     db.getBeacons(function(err, data) {
 
-        socket.emit('update', data.rows);
+        socket.emit('tableupdate', data.rows);
     })
 
     db.getDevices(function(err, data) {
@@ -34,7 +34,7 @@ io.on('connection', function (socket) {
 });
 
 api.onBeaconUpdate(function(beaconData) {
-    io.emit('update', beaconData);
+    io.emit('tableupdate', beaconData);
 
     db.getDevices(function(err, data) {
 

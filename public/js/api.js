@@ -1,7 +1,30 @@
 var API_SERVER = "http://interact-comp241.rhcloud.com";
 //var API_SERVER = "";
+var socket = io.connect(API_SERVER);
+var events = {
+    onTableUpdate: [],
+    onDeviceUpdate: []
+}
+
+socket.on('tableupdate', function(data) {
+    events.onTableUpdate.forEach(function(func) {
+        func(data);
+    })
+});
+
+socket.on('deviceupdate', function(data) {
+    events.onDeviceUpdate.forEach(function(func) {
+        func(data);
+    })
+});
 
 var API = {
+    'onTableUpdate': function(callback) {
+        events.onTableUpdate.push(callback);
+    },
+    'onDeviceUpdate': function(callback) {
+        events.onDeviceUpdate.push(callback);
+    },
     'addTable': function (name, region, x, y, callback) {
         $.ajax({
             url: API_SERVER + '/api/beacons',
