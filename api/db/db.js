@@ -63,4 +63,4 @@ module.exports.setBeaconState = function(beaconID, state, callback) {
             console.error("Error: ", err);
         module.exports.getBeacons(callback);
     });
-})
+};
