@@ -2,7 +2,8 @@ var express = require("express");
 var api = express.Router();
 var db = require("./db/db");
 
-var updateHandler = null;
+var tableUpdateHandler = null;
+var deviceUpdateHandler = null;
 
 api.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -74,7 +75,7 @@ api.get("/enter/:identity/:beacon", function(req, res) {
         if (err)
             console.error("Error: ", err)
         else
-            onBeaconUpdate(data.rows);
+            onDeviceUpdate(data.rows);
     })
     res.json({ success: true });
 })
@@ -82,7 +83,10 @@ api.get("/enter/:identity/:beacon", function(req, res) {
 api.get("/leave/:identity/:beacon", function(req, res) {
     db.deviceLeave(req.params.identity, req.params.beacon, function(err, data)
     {
-        onBeaconUpdate(data.rows);
+        if (err)
+            console.error("Error: ", err);
+        else
+            onDeviceUpdate(data.rows);
     })
     res.json({ success: true });
 })
@@ -94,7 +98,13 @@ getBeaconInfo = function() {
 function onBeaconUpdate(beacons)
 {
     if (updateHandler)
-        updateHandler(beacons);
+        tableUpdateHandler(beacons);
+}
+
+function onDeviceUpdate(devices)
+{
+    if (deviceUpdateHandler)
+        deviceUpdateHandler(devices);
 }
 
 
@@ -102,6 +112,9 @@ function onBeaconUpdate(beacons)
 module.exports = {
     "router": api,
     "onBeaconUpdate": function(func) {
-        updateHandler = func;
+        tableUpdateHandler = func;
+    },
+    "onDeviceUpdate": function(func) {
+        deviceUpdateHandler = func;
     }
 };

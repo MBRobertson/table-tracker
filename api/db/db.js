@@ -31,7 +31,7 @@ module.exports.deviceEnter = function(device, beacon, callback) {
         db.query("INSERT INTO devices(beacon, device, time) VALUES ($1, $2::text, $3)", [beacon, device, new Date()], function(err) {
             if (err)
                 console.error("Error: ", err);
-            module.exports.getBeacons(callback);
+            module.exports.getDevices(callback);
         });
     //});
 }
@@ -54,6 +54,6 @@ module.exports.deleteBeacon = function(id, callback) {
 
 module.exports.deviceLeave = function(device, beacon, callback) {
     db.query("DELETE FROM devices WHERE beacon=$1 AND device=$2::text", [beacon, device], function() {
-        module.exports.getBeacons(callback);
+        module.exports.getDevices(callback);
     });
 }
