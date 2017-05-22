@@ -19,7 +19,6 @@ module.exports.reset = function(callback) {
 
 module.exports.getBeacons = function(callback) {
     db.query("SELECT * FROM beacons", [], callback);
-    console.log("Getting beacons");
 }
 
 module.exports.getDevices = function(callback) {
@@ -37,7 +36,7 @@ module.exports.deviceEnter = function(device, beacon, callback) {
 }
 
 module.exports.addBeacon = function(name, region, x, y, callback) {
-    db.query("INSERT INTO beacons(name, region, x, y) VALUES ($1::text, $2, $3::int, $4::int)", [name, region, x, y], function(err) {
+    db.query("INSERT INTO beacons(name, region, x, y, state) VALUES ($1::text, $2, $3::int, $4::int, 0)", [name, region, x, y], function(err) {
         if (err)
             console.error("Error: ", err);
         module.exports.getBeacons(callback);
@@ -57,3 +56,11 @@ module.exports.deviceLeave = function(device, beacon, callback) {
         module.exports.getDevices(callback);
     });
 }
+
+module.exports.setBeaconState(function(beaconID, state, callback) {
+    db.query("UPDATE devices SET state=$1::int WHERE \"ID\"=$2::int", [state, beaconID], function(err, data) {
+        if (err)
+            console.error("Error: ", err);
+        module.exports.getBeacons(callback);
+    });
+})

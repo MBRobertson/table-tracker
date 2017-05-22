@@ -47,6 +47,20 @@ api.put('/beacons', function(req, res) {
     res.json({success: true});
 })
 
+api.post("/beacons", function(req, res) {
+    var id = req.body.id;
+    var state = req.body.state;
+    if (id && state)
+    {
+        db.setBeaconState(id, state, function(err, data) {
+            if (err)
+                console.error("Error :", err);
+            onBeaconUpdate(data.rows);  
+        });
+    }
+    res.json({ success: true });
+})
+
 api.delete("/beacons", function(req, res) {
     var id = req.body.id;
     if (id)

@@ -67,6 +67,21 @@ var API = {
             console.error(err);
         });
     },
+    'setTableState': function(id, state, callback) {
+        $.ajax({
+            url: API_SERVER + '/api/beacons',
+            type: 'POST',
+            data: {
+                id: id,
+                state: state
+            }
+        }).done(function(res) {
+            if (callback)
+                callback(res);
+        }).fail(function(err) {
+            console.error(err);
+        });
+    },
     'getDevices': function(callback) {
         $.ajax({
             url: API_SERVER + '/api/devices',
