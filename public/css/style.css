@@ -14,12 +14,12 @@
 
 
 
-#rightbody {
+#rightbodycontainer {
     border: 1px solid black;
     border-radius: 5px;
     float: right;
 
-    list-style-type: none; !important
+    list-style-type: none !important;
     
 }
 .tableimg {
@@ -47,7 +47,39 @@
     margin-top: 4%;
 }
 
-
+html {
+    height: 100%;
+}
 body {
     padding: 2% 2% 2% 2%;
+    box-sizing: border-box;
+    height: 100%;
+
+}
+
+#menubody {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100%;
+}
+#rightbodycontainer {
+    display: block;
+    position: fixed;
+    left: 250px;
+    top: 0;
+    width: calc(100% - 250px);
+    max-width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+#rightbody {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4000px;
+    height: 4000px;
+    cursor: pointer;
 }
