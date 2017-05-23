@@ -18,24 +18,56 @@
             var xpos;
             var ypos;
             var ID;
+            var state;
+            var passreserve;
             API.getTables(function(tables) {
                 tables.forEach(function(table) {
                     xpos = table.x;
                     ypos = table.y;
                     region = table.region;
+                    state = table.state;
                 
-                var element = $("<li class='tableimg' id='0' onclick='tableremove' width='100px'></li>");
-
-            element.appendTo("#rightbody");
-                element.css({
-                    "left" : (xpos - 50),
-                    "top" : (ypos - 50)
-                });
-
+                var element = $("<li class='tableimg' id='0' width='100px'></li>");
+                    element.appendTo("#rightbody");
+                    if(state == 1){                        
+                        element.css({
+                            "backgroundImage" : "url(../img/tableyellow.png)",
+                            "left" : (xpos - 50),
+                            "top" : (ypos - 50)
+                        });
+                    }
+                    else{
+                        element.css({
+                            "left" : (xpos - 50),
+                            "top" : (ypos - 50)
+                        }); 
+                    }
                 element.attr('id', region);
-            });
+                    
+                element.click(function() {
+                    if(passreserve == true){
+                        var elemID = $(this).prop("id");
+                        //API.removeTable(parseInt(ID), function() {
+
+                            //getTables();
+                        //})
+                        if(state != 2) {
+                            $("#" + elemID).css({
+
+                                "backgroundImage" : "url(../img/tableyellow.png)"
+
+                            });
+                            
+                            $("#table").fadeOut(300);
+                            $("#tablereserve").fadeOut(300);
+                        }
+                    }
+                    passreserve = false;
+                })
+                
+                });
+                
              });
-            
             
             
             
@@ -43,27 +75,14 @@
             var ID;
             var tabletaken;
             
-            // Can see an example of the data returned here:
-            // http://interact-comp241.rhcloud.com/api/devices
+            
             API.getDevices(function(devices) {
                 devices.forEach(function(tableinfo) {
                     $("#" + tableinfo.beacon).css({
+                      
                                        "backgroundImage" : "url(../img/tablered.png)"
-                                    });
-                    // The table region that the device is near
-//                    tabletaken = tableinfo.beacon;
-//                    API.getTables(function(tables){
-////                        tables.forEach(function(table){
-////                            region = table.region;
-////                            ID = table.ID;
-//                                if(region == tabletaken){
-//                                    $("#" + region).css({
-//                                       "backgroundImage" : "url(../img/tablered.png)"
-//                                    });
-//                                }
-////                        });
-//                    });
-                    
+                    });
+                
                 });
             });
             
@@ -83,12 +102,14 @@
                     <button id="storelogin" class="button">Store Login</button>
                 </div> 
                 <div class="col-lg-9" id="rightbody">
-                    <hr style="display: none">
+                    <br>
                     <p id="table" style="display: none">Please Select a Table</p>
-                    <hr style="display: none">
+                    <hr id="tablereserve" style="display: none">
                 </div>
                 
                 <script>
+                    $("#table").fadeOut(500);
+                    $("#tablereserve").fadeOut(500);
                         $("#storelogin").click(function() {
           
                                 window.location.replace("store.html")
@@ -97,13 +118,11 @@
                     
                         $("#reserve").click(function() {
                            
-
-                                $("#table").css("display", "flex")
-                                $("hr").css("display", "flex")
-                                $("#rightbody").click(function() {
-                                    alert(event.pageX + ":" + event.pageY);                                    
-                                });
-                            
+                                $("#table").fadeIn(300);
+                                $("#tablereserve").fadeIn(300);
+                              
+                                
+                            passreserve = true;
                         });
                         
                     </script>
