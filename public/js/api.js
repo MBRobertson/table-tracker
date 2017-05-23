@@ -95,34 +95,3 @@ var API = {
     }
 }
 
-$(document).ready(function() {
-    var scrolling = false;
-    var panel = $('.scroll');
-    var mouse = { x: 0, y: 0 }
-    var position = { x: 0, y: 0 }
-
-    panel.mousedown(function(e) {
-        scrolling = true;
-        mouse.x = e.pageX;
-        mouse.y = e.pageY;
-    });
-
-    panel.mouseup(function(e) {
-        scrolling = false;
-    });
-
-    panel.mousemove(function(e) {
-        if (scrolling)
-        {
-            position.x = position.x + (e.pageX - mouse.x);
-            position.y = position.y + (e.pageY - mouse.y);
-
-            panel.css("left", position.x + "px");
-            panel.css("top", position.y + "px");
-
-            mouse.x = e.pageX;
-            mouse.y = e.pageY;
-        }
-    })
-})
-

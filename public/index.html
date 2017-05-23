@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="css/bootstrap-grid.css">
-        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+        <!--<link rel="stylesheet" type="text/css" href="css/bootstrap-grid.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">-->
         <link rel="stylesheet" type="text/css" href="css/style.css">
         
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script type="text/javascript" src="js/bootstrap.js"></script>
+        <!--<script type="text/javascript" src="js/bootstrap.js"></script>-->
         <script type="text/javascript" src="js/socket.js"></script>
         <script type="text/javascript" src="js/api.js"></script>
+        <script type="text/javascript" src="js/interface.js"></script>
         
         <title>Best Seats</title>
     </head>
@@ -20,88 +21,35 @@
                 API.setTableState(region, 0);
                 
             }
-            
-            
-            
-            
-            
-            var xpos;
-            var ypos;
-            var ID;
-            var state;
-            var passreserve;
-            
-            API.onTableUpdate(function(tables) {
-                        $('.tableimg').remove();
-                                tables.forEach(function(table) {
-                                    xpos = table.x;
-                                    ypos = table.y;
-                                    ID = table.region;
-                                    var state = table.state;
-                            var element = $("<li class='tableimg' id='" + ID + "' width='100px'></li>");
 
-                            element.appendTo("#rightbody");
-                                    if(state == 1){
-                                      element.css({
-                                        "backgroundImage" : "url(../img/tableyellow.png)",
-                                    "left" : (xpos - 50),
-                                    "top" : (ypos - 50)
-                                });  
-                                    }
-                                    else if (state == 2) {
-                                        element.css({
-                                        "backgroundImage" : "url(../img/tablered.png)",
-                                    "left" : (xpos - 50),
-                                    "top" : (ypos - 50)
-                                    });
-                                    }
-                                                
-                                    else {
-                            element.css({
-
-                                    "left" : (xpos - 50),
-                                    "top" : (ypos - 50)
-                                });
-                                         }
-                            element.attr('id', ID);
-                    element.click(function() {
-                    var elemID;
-                    if(passreserve == true){
-                        elemID = $(this).prop("id");
-                        
-                        if(state == 2) {
-                            alert("This table is taken");
-                            $("#table").fadeOut(300);
-                            $("#tablereserve").fadeOut(300);
-                        }
-                        else {
-                            $("#" + elemID).css({
-                                "backgroundImage" : "url(../img/tableyellow.png)"
-                            });
-                            API.setTableState(elemID, 1);
-                            setTimeout(function() {
-                                reservetimout(elemID);
-                            }, 4000)
-                            $("#table").fadeOut(300);
-                            $("#tablereserve").fadeOut(300);
-                        }
-                    }
-                    passreserve = false;
-                    })       
-                });
-                });
+            // var xpos;
+            // var ypos;
+            // var ID;
+            // var state;
+            // var passreserve;
+            
+            // API.onTableUpdate(function(tables) {
+            //             $('.tableimg').remove();
+            //                     tables.forEach(function(table) {
+            //                         xpos = table.x;
+            //                         ypos = table.y;
+            //                         ID = table.region;
+            //                         var state = table.state;
+                                 
+            //     });
+            //     });
         
             
             
        
             
-            API.getDevices(function(devices) {
-                devices.forEach(function(tableinfo) {
+            // API.getDevices(function(devices) {
+            //     devices.forEach(function(tableinfo) {
                     
-                    API.setTableState(tableinfo.beacon, 2);
+            //         API.setTableState(tableinfo.beacon, 2);
                     
-                });
-            });
+            //     });
+            // });
             
             
             
@@ -111,43 +59,37 @@
         
         <div class="container">
             <div class="row">
-                <div class="col-lg-3" id="menubody">
-                    <h1 id="header">Best Seats</h1>
-                    <hr>
-                    <button class="button" id="reserve">Reserve Tables</button>
-                    
-                    <button id="storelogin" class="button">Store Login</button>
+                <div id="header">
+                    <h1>Best Seats</h1>
                 </div>
-                <div id="rightbodycontainer">
-                    <div class="col-lg-9 scroll" id="rightbody">
-                        <br>
-                        <p id="table" style="display: none">Please Select a Table</p>
-                        <hr id="tablereserve" style="display: none">
+                <div id="menu">
+                    <div class='sub-menu' id="menu-1">
+                        <button class="button" id="reserve">Reserve Tables</button>
+                        <button id="storelogin" class="button bottom">Store Login</button>
+                    </div>
+                    <div class='sub-menu' id="menu-2">
+                        <p>Select a table to reserve!</p>
+                        <button class="button cancel">Cancel</button>
+                        <button id="storelogin" class="button bottom">Store Login</button>
+                    </div>
+                    <div class='sub-menu' id="menu-4">
+                        <button class="button" id="addtable">Add Table</button>
+                        <button class="button" id="removetable">Remove Table</button>
+                        <button id="storelogout" class="button bottom">Log Out</button>
+                    </div>
+                    <div class='sub-menu' id="menu-5">
+                        <p>Click to place a table</p>
+                        <button class="button cancel-store">Cancel</button>
+                    </div>
+                    <div class='sub-menu' id="menu-6">
+                        <p>Click a table to remove</p>
+                        <button class="button cancel-store">Cancel</button>
                     </div>
                 </div>
-                <script>
-                    $("#table").fadeOut(500);
-                    $("#tablereserve").fadeOut(500);
-                        $("#storelogin").click(function() {
-          
-                                window.location.replace("store.html")
-    
-                        });
-                    
-                        $("#reserve").click(function() {
-                           
-                                $("#table").fadeIn(300);
-                                $("#tablereserve").fadeIn(300);
-                              
-                                
-                            passreserve = true;
-                        });
-                        
-                    
-                    
-                    
-                    </script>
-                
+                <div id="content-container">
+                    <div id="rightbody" class="scroll">
+                    </div>
+                </div>
             </div>
         </div>
     </body>
