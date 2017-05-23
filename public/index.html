@@ -15,74 +15,88 @@
     <body>
   
         <script>
+            
+            function reservetimout(region){
+                API.setTableState(region, 0);
+                
+            }
+            
+            
+            
+            
+            
             var xpos;
             var ypos;
             var ID;
             var state;
             var passreserve;
-            API.getTables(function(tables) {
-                tables.forEach(function(table) {
-                    xpos = table.x;
-                    ypos = table.y;
-                    region = table.region;
-                    state = table.state;
-                
-                var element = $("<li class='tableimg' id='0' width='100px'></li>");
-                    element.appendTo("#rightbody");
-                    if(state == 1){                        
-                        element.css({
-                            "backgroundImage" : "url(../img/tableyellow.png)",
-                            "left" : (xpos - 50),
-                            "top" : (ypos - 50)
-                        });
-                    }
-                    else{
-                        element.css({
-                            "left" : (xpos - 50),
-                            "top" : (ypos - 50)
-                        }); 
-                    }
-                element.attr('id', region);
-                    
-                element.click(function() {
-                    if(passreserve == true){
-                        var elemID = $(this).prop("id");
-                        //API.removeTable(parseInt(ID), function() {
+            
+            API.onTableUpdate(function(tables) {
+                        $('.tableimg').remove();
+                                tables.forEach(function(table) {
+                                    xpos = table.x;
+                                    ypos = table.y;
+                                    ID = table.region;
+                                    var state = table.state;
+                            var element = $("<li class='tableimg' id='" + ID + "' width='100px'></li>");
 
-                            //getTables();
-                        //})
+                            element.appendTo("#rightbody");
+                                    if(state == 1){
+                                      element.css({
+                                        "backgroundImage" : "url(../img/tableyellow.png)",
+                                    "left" : (xpos - 50),
+                                    "top" : (ypos - 50)
+                                });  
+                                    }
+                                    else if (state == 2) {
+                                        element.css({
+                                        "backgroundImage" : "url(../img/tablered.png)",
+                                    "left" : (xpos - 50),
+                                    "top" : (ypos - 50)
+                                    });
+                                    }
+                                                
+                                    else {
+                            element.css({
+
+                                    "left" : (xpos - 50),
+                                    "top" : (ypos - 50)
+                                });
+                                         }
+                            element.attr('id', ID);
+                    element.click(function() {
+                    var elemID;
+                    if(passreserve == true){
+                        elemID = $(this).prop("id");
+                        
                         if(state != 2) {
                             $("#" + elemID).css({
 
                                 "backgroundImage" : "url(../img/tableyellow.png)"
 
                             });
-                            
+                            API.setTableState(elemID, 1);
+                            setTimeout(function() {
+                                reservetimout(elemID);
+                            }, 4000)
                             $("#table").fadeOut(300);
                             $("#tablereserve").fadeOut(300);
                         }
                     }
                     passreserve = false;
-                })
-                
+                    })       
                 });
-                
-             });
+                });
+        
             
             
-            
-            var region;
-            var ID;
-            var tabletaken;
-            
+       
             
             API.getDevices(function(devices) {
                 devices.forEach(function(tableinfo) {
-                    $("#" + tableinfo.beacon).css({
-                      
-                                       "backgroundImage" : "url(../img/tablered.png)"
-                    });
-                
+                    
+                    API.setTableState(tableinfo.beacon, 2);
+                    
                 });
             });
             
@@ -125,6 +139,9 @@
                             passreserve = true;
                         });
                         
+                    
+                    
+                    
                     </script>
                 
             </div>
