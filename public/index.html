@@ -69,11 +69,14 @@
                     if(passreserve == true){
                         elemID = $(this).prop("id");
                         
-                        if(state != 2) {
+                        if(state == 2) {
+                            alert("This table is taken");
+                            $("#table").fadeOut(300);
+                            $("#tablereserve").fadeOut(300);
+                        }
+                        else {
                             $("#" + elemID).css({
-
                                 "backgroundImage" : "url(../img/tableyellow.png)"
-
                             });
                             API.setTableState(elemID, 1);
                             setTimeout(function() {
