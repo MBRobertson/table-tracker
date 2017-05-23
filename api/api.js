@@ -111,7 +111,7 @@ getBeaconInfo = function() {
 
 function onBeaconUpdate(beacons)
 {
-    if (updateHandler)
+    if (tableUpdateHandler)
         tableUpdateHandler(beacons);
 }
 
