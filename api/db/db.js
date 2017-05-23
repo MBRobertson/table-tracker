@@ -58,7 +58,7 @@ module.exports.deviceLeave = function(device, beacon, callback) {
 }
 
 module.exports.setBeaconState = function(beaconID, state, callback) {
-    db.query("UPDATE devices SET state=$1::int WHERE \"ID\"=$2::int", [state, beaconID], function(err, data) {
+    db.query("UPDATE beacons SET state=$1::int WHERE \"region\"=$2::int", [state, beaconID], function(err, data) {
         if (err)
             console.error("Error: ", err);
         module.exports.getBeacons(callback);
