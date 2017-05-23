@@ -18,6 +18,7 @@
             var ypos;
             var ID;
             var state;
+            var passreserve;
             API.getTables(function(tables) {
                 tables.forEach(function(table) {
                     xpos = table.x;
@@ -41,6 +42,28 @@
                         }); 
                     }
                 element.attr('id', region);
+                    
+                element.click(function() {
+                    if(passreserve == true){
+                        var elemID = $(this).prop("id");
+                        //API.removeTable(parseInt(ID), function() {
+
+                            //getTables();
+                        //})
+                        if(state != 2) {
+                            $("#" + elemID).css({
+
+                                "backgroundImage" : "url(../img/tableyellow.png)"
+
+                            });
+                            
+                            $("#table").fadeOut(300);
+                            $("#tablereserve").fadeOut(300);
+                        }
+                    }
+                    passreserve = false;
+                })
+                
                 });
                 
              });
@@ -78,12 +101,14 @@
                     <button id="storelogin" class="button">Store Login</button>
                 </div> 
                 <div class="col-lg-9" id="rightbody">
-                    <hr style="display: none">
+                    <br>
                     <p id="table" style="display: none">Please Select a Table</p>
-                    <hr style="display: none">
+                    <hr id="tablereserve" style="display: none">
                 </div>
                 
                 <script>
+                    $("#table").fadeOut(500);
+                    $("#tablereserve").fadeOut(500);
                         $("#storelogin").click(function() {
           
                                 window.location.replace("store.html")
@@ -92,13 +117,11 @@
                     
                         $("#reserve").click(function() {
                            
-
-                                $("#table").css("display", "flex")
-                                $("hr").css("display", "flex")
-                                $("#rightbody").click(function() {
-                                    alert(event.pageX + ":" + event.pageY);                                    
-                                });
-                            
+                                $("#table").fadeIn(300);
+                                $("#tablereserve").fadeIn(300);
+                              
+                                
+                            passreserve = true;
                         });
                         
                     </script>
