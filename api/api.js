@@ -2,11 +2,13 @@ var express = require("express");
 var api = express.Router();
 var db = require("./db/db");
 
-var updateHandler = null;
+var tableUpdateHandler = null;
+var deviceUpdateHandler = null;
 
 api.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, HEAD");
     next();
 });
 
@@ -19,7 +21,10 @@ api.get("/reset", function(req, res) {
 
 api.get("/beacons", function(req, res) {
     db.getBeacons(function(err, data) {
-        res.json(data.rows);
+        if (err)
+            res.json({ success: false });
+        else
+            res.json(data.rows);
     })
 })
 
@@ -35,10 +40,25 @@ api.put('/beacons', function(req, res) {
         db.addBeacon(name, region, x, y, function(err, data) {
             if (err)
                 console.error("Error :", err);
-            onBeaconUpdate(data.rows);
+            else
+                onBeaconUpdate(data.rows);
         })
     }
     res.json({success: true});
+})
+
+api.post("/beacons", function(req, res) {
+    var id = req.body.id;
+    var state = req.body.state;
+    if (id && state)
+    {
+        db.setBeaconState(id, state, function(err, data) {
+            if (err)
+                console.error("Error :", err);
+            onBeaconUpdate(data.rows);  
+        });
+    }
+    res.json({ success: true });
 })
 
 api.delete("/beacons", function(req, res) {
@@ -54,10 +74,22 @@ api.delete("/beacons", function(req, res) {
     res.json({ success: true });
 })
 
+api.get("/devices", function(req, res) {
+    db.getDevices(function(err, data) {
+        if (err)
+            res.json({ success: false });
+        else
+            res.json(data.rows);
+    })
+})
+
 api.get("/enter/:identity/:beacon", function(req, res) {
     db.deviceEnter(req.params.identity, req.params.beacon, function(err, data)
     {
-        onBeaconUpdate(data.rows);
+        if (err)
+            console.error("Error: ", err)
+        else
+            onDeviceUpdate(data.rows);
     })
     res.json({ success: true });
 })
@@ -65,7 +97,10 @@ api.get("/enter/:identity/:beacon", function(req, res) {
 api.get("/leave/:identity/:beacon", function(req, res) {
     db.deviceLeave(req.params.identity, req.params.beacon, function(err, data)
     {
-        onBeaconUpdate(data.rows);
+        if (err)
+            console.error("Error: ", err);
+        else
+            onDeviceUpdate(data.rows);
     })
     res.json({ success: true });
 })
@@ -77,7 +112,13 @@ getBeaconInfo = function() {
 function onBeaconUpdate(beacons)
 {
     if (updateHandler)
-        updateHandler(beacons);
+        tableUpdateHandler(beacons);
+}
+
+function onDeviceUpdate(devices)
+{
+    if (deviceUpdateHandler)
+        deviceUpdateHandler(devices);
 }
 
 
@@ -85,6 +126,9 @@ function onBeaconUpdate(beacons)
 module.exports = {
     "router": api,
     "onBeaconUpdate": function(func) {
-        updateHandler = func;
+        tableUpdateHandler = func;
+    },
+    "onDeviceUpdate": function(func) {
+        deviceUpdateHandler = func;
     }
 };
