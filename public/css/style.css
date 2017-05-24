@@ -147,6 +147,9 @@ html, body {
     bottom: 10px;
 }
 
+.table-kiosk {
+    background-image: url(../img/kiosk.png)
+}
 .table-reserved {
     background-image: url(../img/tableyellow.png)
 }

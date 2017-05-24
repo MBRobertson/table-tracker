@@ -8,6 +8,7 @@ var stateEvents = [];
 var MENUS = {
     MAIN: 1,
     RESERVE: 2,
+    NEARBY: 3,
     MANAGE: 4,
     PLACE: 5,
     REMOVE: 6
@@ -15,6 +16,7 @@ var MENUS = {
 
 var STATES = {
     NONE: 0,
+    NEARBY: 5,
     RESERVING: 1,
     MANAGING: 2,
     PLACING: 3,
@@ -33,8 +35,9 @@ function onStateChange(func) {
 }
 
 var menuDebounce = false;
-function setMenu(menuID) {
-    if (!menuDebounce)
+function setMenu(menuID, force) {
+    if (!force) force = false;
+    if ((!menuDebounce || force) && (menu != menuDebounce))
     {   
         menuDebounce = true;
         var newMenu = $('#menu-' + menuID);
@@ -117,15 +120,31 @@ $(document).ready(function() {
         setState(STATES.RESERVING);      
     });
 
-    $('.cancel').click(function() { setState(STATES.NONE); });
+    $('.cancel').click(function() { setState(STATES.NEARBY); });
     $('.cancel-store').click(function() { setState(STATES.MANAGING); });
 
     $("#addtable").click(function() { setState(STATES.PLACING) });
     $("#removetable").click(function() { setState(STATES.REMOVING) });
 
-    $("#storelogin").click(function() { setState(STATES.MANAGING) });
-    $("#storelogout").click(function() { setState(STATES.NONE) });
+    $(".storelogin").click(function() { setState(STATES.MANAGING) });
+    $("#storelogout").click(function() { 
+        if (Devices.deviceNearTable(Devices.kioskID))
+            setState(STATES.NEARBY);
+        else
+            setState(STATES.NONE) 
+    });
 })
+
+var Users = {
+    fromDevice: function(device) {
+        if (device.device == "2d8368086c1d35e7")
+            return "Michael";
+        else if (device.device == "1")
+            return "DummyUser";
+        else
+            return device.device;
+    }
+}
 
 var Tables = {
     curTables: [],
@@ -155,6 +174,7 @@ API.onTableUpdate(function(tables) {
 })
 
 var Devices = {
+    kioskID: 1,
     curDevices: [],
     deviceNearTable: function(region) {
         for (var i = 0; i < Devices.curDevices.length; i++)
@@ -163,10 +183,21 @@ var Devices = {
                 return true;
         }
         return false;
+    },
+    nearKiosk: function() {
+        for (var i = 0; i < Devices.curDevices.length; i++)
+        {
+            if (Devices.curDevices[i].beacon == Devices.kioskID)
+                return Devices.curDevices[i];
+        }
     }
 }
-API.onDeviceUpdate(function(devices) {
-    Devices.curDevices = devices;
+API.onDeviceUpdate(function(d) {
+    Devices.curDevices = d;
+    if (Devices.deviceNearTable(Devices.kioskID) && state == STATES.NONE)
+        setState(STATES.NEARBY);
+    else if (state == STATES.NEARBY)
+        setState(STATES.NONE);
     Interface.redraw();
 })
 
@@ -179,7 +210,9 @@ var Interface = {
         var obj = $("<li class='table' id='" + table.region + "' width='100px'></li>");
         obj.appendTo("#rightbody");
         obj.css({"left": (table.x - 50), "top": (table.y - 50)});
-        if (Devices.deviceNearTable(table.region)) {
+        if (table.region == Devices.kioskID)
+            obj.addClass("table-kiosk");
+        else if (Devices.deviceNearTable(table.region)) {
             obj.addClass('table-taken')
         }
         else if (table.state == 1) {
@@ -200,13 +233,17 @@ var Interface = {
         Tables.curTables.forEach(function(table) {
             Interface.addTable(table);
         })
+        if (Devices.deviceNearTable(Devices.kioskID))
+        {
+            $('.table-kiosk').append("<span class='kiosk-notify'>You are Here</span>");
+        }
     }
 }
 
 // Handle menus on state changes
 onStateChange(function(state) {
     if (state == STATES.NONE) {
-        setMenu(MENUS.MAIN);
+        setMenu(MENUS.MAIN, true);
     }
 });
 
@@ -247,5 +284,18 @@ onStateChange(function(state) {
         setMenu(MENUS.REMOVE);
         $('.table').addClass('table-glow');
         
+    }
+});
+
+onStateChange(function(state) {
+    if (state == STATES.NEARBY)
+    {
+        setMenu(MENUS.NEARBY, true);
+        $('.name-holder').html(Users.fromDevice(Devices.nearKiosk()));
+        $('.table-kiosk').append("<span class='kiosk-notify'>You are Here</span>");
+    }
+    else
+    {
+        $('.kiosk-notify').remove();
     }
 });
