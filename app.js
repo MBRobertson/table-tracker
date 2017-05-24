@@ -16,7 +16,7 @@ app.use(bodyParser.json())
 app.use("/api", api.router);
 
 app.get("/", function(req, res) {
-    res.sendFile(path.join(__dirname, "client", "index.html"));
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.use(express.static("public"));
