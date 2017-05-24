@@ -150,13 +150,13 @@ var Tables = {
     curTables: [],
     // Reserve a given table
     reserveTable: function(region) {
-        if (Devices.deviceNearTable(region)) {
+        if (Devices.deviceNearTable(region) || region == Devices.kioskID) {
             alert("This table is taken");
             return;
         }
         $tables(region).addClass('table-reserved');
         API.setTableState(region, 1);
-        setState(STATES.NONE);
+        setState(STATES.NEARBY);
          setTimeout(function() {
                 API.setTableState(region, 0);
          }, 4000)
@@ -251,7 +251,7 @@ onStateChange(function(state) {
     if (state == STATES.RESERVING)
     {
         setMenu(MENUS.RESERVE);
-        $('.table:not(.table-taken):not(.table-reserved)').addClass('table-glow');
+        $('.table:not(.table-taken):not(.table-reserved):not(.table-kiosk)').addClass('table-glow');
     }
     else
     {
