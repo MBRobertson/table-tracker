@@ -138,9 +138,9 @@ var Tables = {
         $tables(region).addClass('table-reserved');
         API.setTableState(region, 1);
         setState(STATES.NONE);
-        // setTimeout(function() {
-        //     reservetimout(elemID);
-        // }, 4000)
+         setTimeout(function() {
+                API.setTableState(region, 0);
+         }, 4000)
     },
     removeTable: function(table) {
         API.removeTable(parseInt(table.ID));
