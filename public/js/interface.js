@@ -1,6 +1,7 @@
 var mouse = { x: 0, y: 0 }
 var position = { x: 0, y: 0 }
 var scrolling = false;
+var touch = null;
 var menu = 1;
 var state = 0;
 var stateEvents = [];
@@ -95,6 +96,55 @@ $(document).ready(function() {
             e.preventDefault();
         }
     });
+
+    // Panel drag events for touch devices
+    panel.on('touchstart', function(e) {
+        var touches = e.changedTouches;
+        if (touches.length >= 1 && touch == null)
+        {
+            touch = touches[0];
+            scrolling = true;
+            mouse.x = touch.pageX;
+            mouse.y = touch.pageY;
+        }
+    });
+
+    panel.on('touchend', function(e) {
+        var touches = e.changedTouches;
+        if (touch != null)
+        {
+            for (var i = 0; i < touches.length; i++) {
+                t = touches[i];
+                if (t.identifier == touch.identifier)
+                {
+                    touch = null;
+                    scrolling = false;
+                }
+            }
+        }
+    });
+
+    $(document).on('touchmove', function(e) {
+        var touches = e.changedTouches
+        if (touch != null && scrolling)
+        {
+            for (var i = 0; i < touches.length; i++) {
+                t = touches[i];
+                if (t.identifier == touch.identifier)
+                {
+                    position.x = position.x + (t.pageX - mouse.x);
+                    position.y = position.y + (t.pageY - mouse.y);
+
+                    panel.css("left", position.x + "px");
+                    panel.css("top", position.y + "px");
+
+                    mouse.x = t.pageX;
+                    mouse.y = t.pageY;
+                }
+            }
+        }
+    });
+
 
     var tableCount = 0;
     panel.click(function(e) {
