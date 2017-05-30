@@ -1,11 +1,14 @@
+// Variables to track positions for panning around the display
 var mouse = { x: 0, y: 0 }
 var position = { x: 0, y: 0 }
 var scrolling = false;
 var touch = null;
+// Variables to keep track of the current state of the app
 var menu = 1;
 var state = 0;
 var stateEvents = [];
 
+// Enum style helpers to better check the state of the app
 var MENUS = {
     MAIN: 1,
     RESERVE: 2,
@@ -24,6 +27,7 @@ var STATES = {
     REMOVING: 4
 }
 
+// Set the current state of the web app, will trigger any onStateChange events set
 function setState(s) {
     state = s;
     stateEvents.forEach(function(func) {
@@ -31,19 +35,24 @@ function setState(s) {
     })
 }
 
+// Bind a function to be triggered on a state change
 function onStateChange(func) {
     stateEvents.push(func);
 }
 
+// Prevents menu transitions in the middle of a transition
 var menuDebounce = false;
+// Set a specific menu to display (force overrides debounce)
 function setMenu(menuID, force) {
     if (!force) force = false;
     if ((!menuDebounce || force) && (menu != menuDebounce))
     {   
+        // Get the DOM elements of the respective menus
         menuDebounce = true;
         var newMenu = $('#menu-' + menuID);
         var oldMenu = $('#menu-' + menu);
         menu = menuID;
+        // Manipulate classes for a smooth CSS transition between the menus
         newMenu.removeClass('sub-menu-post');
         newMenu.addClass('sub-menu-pre');
         newMenu.addClass('animate');
@@ -63,9 +72,39 @@ function setMenu(menuID, force) {
     }
 }
 
+// Center the camera on a specific point
+function lookAt(x, y)
+{
+    // Don't force movement if the user is scrolling
+    if (scrolling) return;
+    // Set the current view to be centered on the given position
+    var panel = $('#content-container');
+    position.x = x + (panel.width()/2);
+    position.y = y + (panel.height()/2);
+    console.log(position.x + " - " + position.y);
+
+    // Prevent other scrolling events from occuring
+    scrolling = true;
+    // Animate towards the position
+    panel = $('.scroll');
+    panel.addClass('animate-pan');
+    setTimeout(function() {
+        panel.css("left", position.x + "px");
+        panel.css("top", position.y + "px");
+        setTimeout(function() {
+            panel.removeClass('animate-pan');
+            scrolling = false;
+        }, 310);
+    }, 10);
+    
+}
+
+// Small helper function to get a tables jQuery DOM object from the region id
 function $tables(region) { return $('#' + region); }
 
+// On document load, bind any button and mouse events
 $(document).ready(function() {
+    // Set the default menu to show on startup
     $('.sub-menu').hide().removeClass('animate');
     $('#menu-' + menu).show();
     var panel = $('.scroll');
@@ -145,7 +184,7 @@ $(document).ready(function() {
         }
     });
 
-
+    // The following click event will only trigger when in STATES.PLACING, will allow the placement of new tables
     var tableCount = 0;
     panel.click(function(e) {
         if (state == STATES.PLACING) {
@@ -166,9 +205,8 @@ $(document).ready(function() {
         }
     });
 
-    $("#reserve").click(function() {    
-        setState(STATES.RESERVING);      
-    });
+    // Bind various buttons to click events 
+    $("#reserve").click(function() { setState(STATES.RESERVING);});
 
     $('.cancel').click(function() { setState(STATES.NEARBY); });
     $('.cancel-store').click(function() { setState(STATES.MANAGING); });
@@ -185,6 +223,7 @@ $(document).ready(function() {
     });
 })
 
+// Temporary helper to fake user information
 var Users = {
     fromDevice: function(device) {
         if (device.device == "2d8368086c1d35e7")
@@ -196,6 +235,7 @@ var Users = {
     }
 }
 
+// Grouped helper functions for managing tables on the display
 var Tables = {
     curTables: [],
     // Reserve a given table
@@ -211,6 +251,7 @@ var Tables = {
                 API.setTableState(region, 0);
          }, 4000)
     },
+    // Remove a table both from the interface and the server
     removeTable: function(table) {
         API.removeTable(parseInt(table.ID));
         $('#'+table.region).remove();
@@ -218,14 +259,19 @@ var Tables = {
         setState(STATES.MANAGING);
     }
 }
+// Listen for changes using websockets and trigger a redraw on a change
 API.onTableUpdate(function(tables) {
     Tables.curTables = tables;
     Interface.redraw();
 })
 
+// Grouped helper functions for managing device information and their locations
 var Devices = {
+    // The id of the beacon for this display (will detect devices near the current display)
     kioskID: 1,
+    // List of devices currently known
     curDevices: [],
+    // Check if there are any devices near a table
     deviceNearTable: function(region) {
         for (var i = 0; i < Devices.curDevices.length; i++)
         {
@@ -234,6 +280,7 @@ var Devices = {
         }
         return false;
     },
+    // Get device information for those near the kiosk
     nearKiosk: function() {
         for (var i = 0; i < Devices.curDevices.length; i++)
         {
@@ -242,8 +289,10 @@ var Devices = {
         }
     }
 }
+// Listen for changes using websockets and trigger a redraw on a change
 API.onDeviceUpdate(function(d) {
     Devices.curDevices = d;
+    // Check if there are any devices near the kiosk
     if (Devices.deviceNearTable(Devices.kioskID) && state == STATES.NONE)
         setState(STATES.NEARBY);
     else if (state == STATES.NEARBY)
@@ -290,13 +339,14 @@ var Interface = {
     }
 }
 
-// Handle menus on state changes
+// Reset the display on state change back to default
 onStateChange(function(state) {
     if (state == STATES.NONE) {
         setMenu(MENUS.MAIN, true);
     }
 });
 
+// Highlight avaliable tables when entering the reserving state
 onStateChange(function(state) {
     if (state == STATES.RESERVING)
     {
@@ -309,6 +359,7 @@ onStateChange(function(state) {
     }
 })
 
+// Display relevant menu when going to the store admin state
 onStateChange(function(state) {
     if (state == STATES.MANAGING)
     {
@@ -316,6 +367,7 @@ onStateChange(function(state) {
     }
 });
 
+// Display relevant menus and change the cursor when placing tables
 onStateChange(function(state) {
     if (state == STATES.PLACING)
     {
@@ -328,6 +380,7 @@ onStateChange(function(state) {
     }
 });
 
+// Highlight all tables that can be removed when in the remove state
 onStateChange(function(state) {
     if (state == STATES.REMOVING)
     {
@@ -337,6 +390,7 @@ onStateChange(function(state) {
     }
 });
 
+// Display user interface when a device is nearby
 onStateChange(function(state) {
     if (state == STATES.NEARBY)
     {

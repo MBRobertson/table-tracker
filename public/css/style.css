@@ -98,6 +98,9 @@ html, body {
 .animate {
     transition: left ease-out 0.35s, opacity ease-in-out 0.35s;
 }
+.animate-pan {
+    transition: left ease-in-out 0.3s, top ease-in-out 0.3s;
+}
 .sub-menu-pre
 {
     left: 100%;
