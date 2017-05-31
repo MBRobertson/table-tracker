@@ -163,7 +163,7 @@ html, body {
 
 /* Re arrange panels for displays where the menu is bigger than the panel (screen < 700px) */
 @media only screen and (max-width: 700px)
-{
+{ /*
     .table-kiosk {
         background-image: url(../img/kiosksmall.png);
         background-repeat: no-repeat;
@@ -181,7 +181,7 @@ html, body {
         background-repeat: no-repeat;
     }
     
-    
+    */
     
     .container, .row {
         height: 100%;
