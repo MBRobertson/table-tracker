@@ -162,7 +162,7 @@ html, body {
 }
 
 /* Re arrange panels for displays where the menu is bigger than the panel (screen < 700px) */
-@media screen and (max-width: 700px)
+@media only screen and (max-width: 700px)
 {
     .container, .row {
         height: 100%;
