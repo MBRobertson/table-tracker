@@ -1,6 +1,6 @@
-var API_SERVER = "http://interact-comp241.rhcloud.com";
+var API_SERVER = "http://interact-comp241.rhcloud.com/";
 //var API_SERVER = "";
-var socket = io.connect(API_SERVER);
+var socket = io.connect(API_SERVER, {'transports': ['websocket', 'polling']});
 var events = {
     onTableUpdate: [],
     onDeviceUpdate: []
