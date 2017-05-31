@@ -247,9 +247,9 @@ var Tables = {
         $tables(region).addClass('table-reserved');
         API.setTableState(region, 1);
         setState(STATES.NEARBY);
-         setTimeout(function() {
-                API.setTableState(region, 0);
-         }, 4000)
+        //  setTimeout(function() {
+        //         API.setTableState(region, 0);
+        //  }, 4000)
     },
     // Remove a table both from the interface and the server
     removeTable: function(table) {
@@ -313,6 +313,9 @@ var Interface = {
             obj.addClass("table-kiosk");
         else if (Devices.deviceNearTable(table.region)) {
             obj.addClass('table-taken')
+            if (table.state == 1) {
+                API.setTableState(table.region, 0);
+            }
         }
         else if (table.state == 1) {
             obj.addClass('table-reserved');
