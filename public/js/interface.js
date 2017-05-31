@@ -342,13 +342,6 @@ var Interface = {
     }
 }
 
-// Reset the display on state change back to default
-onStateChange(function(state) {
-    if (state == STATES.NONE) {
-        setMenu(MENUS.MAIN, true);
-    }
-});
-
 // Highlight avaliable tables when entering the reserving state
 onStateChange(function(state) {
     if (state == STATES.RESERVING)
@@ -404,5 +397,15 @@ onStateChange(function(state) {
     else
     {
         $('.kiosk-notify').remove();
+    }
+});
+
+// Reset the display on state change back to default
+onStateChange(function(state) {
+    if (state == STATES.NONE) {
+        if (Devices.deviceNearTable(Devices.kioskID))
+            setState(STATES.NEARBY);
+        else
+            setMenu(MENUS.MAIN, true);
     }
 });
