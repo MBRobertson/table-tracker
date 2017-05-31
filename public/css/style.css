@@ -165,16 +165,20 @@ html, body {
 @media only screen and (max-width: 700px)
 {
     .table-kiosk {
-        background-image: url(../img/kiosksmall.png)
+        background-image: url(../img/kiosksmall.png);
+        background-repeat: no-repeat;
     }
     .table-reserved {
-        background-image: url(../img/tableyellowsmall.png)
+        background-image: url(../img/tableyellowsmall.png);
+        background-repeat: no-repeat;
     }
     .table-taken {
-        background-image: url(../img/tableredsmall.png)
+        background-image: url(../img/tableredsmall.png);
+        background-repeat: no-repeat;
     }
     .table {
     background-image: url(../img/tablesmall.png);
+        background-repeat: no-repeat;
     }
     
     
