@@ -293,7 +293,7 @@ var Devices = {
 API.onDeviceUpdate(function(d) {
     Devices.curDevices = d;
     // Check if there are any devices near the kiosk
-    if (Devices.deviceNearTable(Devices.kioskID) && state == STATES.NONE)
+    if (Devices.deviceNearTable(Devices.kioskID))
         setState(STATES.NEARBY);
     else if (state == STATES.NEARBY)
         setState(STATES.NONE);
