@@ -1,6 +1,7 @@
 var API_SERVER = "http://interact-comp241.rhcloud.com/";
 //var API_SERVER = "";
 var socket = io.connect(API_SERVER);
+io.set('origins', '*');
 var events = {
     onTableUpdate: [],
     onDeviceUpdate: []
