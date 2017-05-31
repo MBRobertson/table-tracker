@@ -164,6 +164,21 @@ html, body {
 /* Re arrange panels for displays where the menu is bigger than the panel (screen < 700px) */
 @media only screen and (max-width: 700px)
 {
+    .table-kiosk {
+        background-image: url(../img/kiosksmall.png)
+    }
+    .table-reserved {
+        background-image: url(../img/tableyellowsmall.png)
+    }
+    .table-taken {
+        background-image: url(../img/tableredsmall.png)
+    }
+    .table {
+    background-image: url(../img/tablesmall.png);
+    }
+    
+    
+    
     .container, .row {
         height: 100%;
     }
