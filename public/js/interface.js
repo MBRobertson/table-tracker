@@ -29,6 +29,7 @@ var STATES = {
 
 // Set the current state of the web app, will trigger any onStateChange events set
 function setState(s) {
+    if (state == s) return;
     state = s;
     stateEvents.forEach(function(func) {
         func(state);
@@ -291,12 +292,19 @@ var Devices = {
 }
 // Listen for changes using websockets and trigger a redraw on a change
 API.onDeviceUpdate(function(d) {
+    console.log(d);
     Devices.curDevices = d;
     // Check if there are any devices near the kiosk
     if (Devices.deviceNearTable(Devices.kioskID))
+    {
+        console.log("Nearby");
         setState(STATES.NEARBY);
+    }
     else if (state == STATES.NEARBY)
+    {
+        console.log("Not nearby");
         setState(STATES.NONE);
+    }
     Interface.redraw();
 })
 
