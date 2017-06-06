@@ -180,6 +180,8 @@ $(document).ready(function() {
 
                     mouse.x = t.pageX;
                     mouse.y = t.pageY;
+
+                    e.preventDefault();
                 }
             }
         }
