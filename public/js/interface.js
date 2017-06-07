@@ -353,6 +353,15 @@ var Interface = {
         {
             $('.table-kiosk').append("<span class='kiosk-notify'>You are Here</span>");
         }
+
+        if (state == STATES.RESERVING)
+        {
+            $('.table:not(.table-taken):not(.table-reserved):not(.table-kiosk)').addClass('table-glow');
+        }
+        if (state == STATES.REMOVING)
+        {
+            $('.table').addClass('table-glow');
+        }
     }
 }
 
@@ -406,6 +415,7 @@ onStateChange(function(state) {
     {
         setMenu(MENUS.NEARBY, true);
         $('.name-holder').html(Users.fromDevice(Devices.nearKiosk()));
+        $('.kiosk-notify').remove();
         $('.table-kiosk').append("<span class='kiosk-notify'>You are Here</span>");
     }
     else
