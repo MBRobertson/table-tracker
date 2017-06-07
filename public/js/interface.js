@@ -295,19 +295,22 @@ var Devices = {
 // Listen for changes using websockets and trigger a redraw on a change
 API.onDeviceUpdate(function(d) {
     console.log(d);
-    Devices.curDevices = d;
-    // Check if there are any devices near the kiosk
-    if (Devices.deviceNearTable(Devices.kioskID))
+    if (JSON.stringify(d) !== JSON.stringify(Devices.curDevices))
     {
-        console.log("Nearby");
-        setState(STATES.NEARBY);
+        Devices.curDevices = d;
+        // Check if there are any devices near the kiosk
+        if (Devices.deviceNearTable(Devices.kioskID))
+        {
+            console.log("Nearby");
+            setState(STATES.NEARBY);
+        }
+        else if (state == STATES.NEARBY)
+        {
+            console.log("Not nearby");
+            setState(STATES.NONE);
+        }
+        Interface.redraw();
     }
-    else if (state == STATES.NEARBY)
-    {
-        console.log("Not nearby");
-        setState(STATES.NONE);
-    }
-    Interface.redraw();
 })
 
 // Control the display of tables
