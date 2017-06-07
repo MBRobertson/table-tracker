@@ -410,7 +410,7 @@ onStateChange(function(state) {
     }
     else
     {
-        $('.kiosk-notify').remove();
+        // $('.kiosk-notify').remove();
     }
 });
 
@@ -420,6 +420,9 @@ onStateChange(function(state) {
         if (Devices.deviceNearTable(Devices.kioskID))
             setState(STATES.NEARBY);
         else
+        {
             setMenu(MENUS.MAIN, true);
+            $('.kiosk-notify').remove();
+        }
     }
 });
