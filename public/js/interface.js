@@ -303,13 +303,14 @@ API.onDeviceUpdate(function(d) {
         {
             console.log("Nearby");
             setState(STATES.NEARBY);
+            Interface.redraw();
         }
         else if (state == STATES.NEARBY)
         {
             console.log("Not nearby");
             setState(STATES.NONE);
+            Interface.redraw();
         }
-        Interface.redraw();
     }
 })
 
