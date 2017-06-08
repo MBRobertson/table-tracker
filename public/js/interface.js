@@ -295,7 +295,7 @@ var Devices = {
 // Listen for changes using websockets and trigger a redraw on a change
 API.onDeviceUpdate(function(d) {
     console.log(d);
-    if (JSON.stringify(d) !== JSON.stringify(Devices.curDevices))
+    if (JSON.stringify(d) != JSON.stringify(Devices.curDevices))
     {
         Devices.curDevices = d;
         // Check if there are any devices near the kiosk
