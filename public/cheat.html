@@ -26,6 +26,11 @@
         <a href="#" id="deviceEnter-3">Enter 3</a>
         <a href="#" id="deviceEnter-4">Enter 4</a>
 
+        <a href="#" id="deviceLeave-1">Enter Kiosk</a>
+        <a href="#" id="deviceLeave-2">Leave 2</a>
+        <a href="#" id="deviceLeave-3">Leave 3</a>
+        <a href="#" id="deviceLeave-4">Leave 4</a>
+
         <a href="#" id="reset">Reset</a>
 
         <script>
@@ -59,6 +64,32 @@
                 $('#deviceEnter-4').click(function() {
                     $.ajax({
                         url: API_SERVER + '/api/enter/' + $('#name').val() + '/4',
+                        type: 'GET'
+                    })
+                });
+
+                $('#deviceLeave-1').click(function() {
+                    $.ajax({
+                        url: API_SERVER + '/api/leave/' + $('#name').val() + '/1',
+                        type: 'GET'
+                    })
+                });
+
+                $('#deviceLeave-2').click(function() {
+                    $.ajax({
+                        url: API_SERVER + '/api/leave/' + $('#name').val() + '/2',
+                        type: 'GET'
+                    })
+                });
+                $('#deviceLeave-3').click(function() {
+                    $.ajax({
+                        url: API_SERVER + '/api/leave/' + $('#name').val() + '/3',
+                        type: 'GET'
+                    })
+                });
+                $('#deviceLeave-4').click(function() {
+                    $.ajax({
+                        url: API_SERVER + '/api/leave/' + $('#name').val() + '/4',
                         type: 'GET'
                     })
                 });
