@@ -231,6 +231,8 @@ var Users = {
     fromDevice: function(device) {
         if (device.device == "2d8368086c1d35e7")
             return "Michael";
+        else if (device.device == "e3362e875193f5df")
+            return "Bill";
         else if (device.device == "1")
             return "DummyUser";
         else
