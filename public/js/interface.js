@@ -46,7 +46,7 @@ var menuDebounce = false;
 // Set a specific menu to display (force overrides debounce)
 function setMenu(menuID, force) {
     if (!force) force = false;
-    if ((!menuDebounce || force) && (menu != menuDebounce))
+    if ((!menuDebounce || force) && (menu != menuID))
     {   
         // Get the DOM elements of the respective menus
         menuDebounce = true;
@@ -409,6 +409,19 @@ onStateChange(function(state) {
     }
 });
 
+// Reset the display on state change back to default
+onStateChange(function(state) {
+    if (state == STATES.NONE) {
+        if (Devices.deviceNearTable(Devices.kioskID))
+            setState(STATES.NEARBY);
+        else
+        {
+            setMenu(MENUS.MAIN, true);
+            $('.kiosk-notify').remove();
+        }
+    }
+});
+
 // Display user interface when a device is nearby
 onStateChange(function(state) {
     if (state == STATES.NEARBY)
@@ -421,18 +434,5 @@ onStateChange(function(state) {
     else
     {
         // $('.kiosk-notify').remove();
-    }
-});
-
-// Reset the display on state change back to default
-onStateChange(function(state) {
-    if (state == STATES.NONE) {
-        if (Devices.deviceNearTable(Devices.kioskID))
-            setState(STATES.NEARBY);
-        else
-        {
-            setMenu(MENUS.MAIN, true);
-            $('.kiosk-notify').remove();
-        }
     }
 });
