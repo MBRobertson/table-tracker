@@ -1,5 +1,6 @@
 const pg = require('pg');
 
+// PostgreSQL database configuration, should generally be pulled from environment variables
 var config = {
   user: process.env.OPENSHIFT_POSTGRESQL_DB_USERNAME || 'admin',
   database: 'interact',
@@ -10,12 +11,15 @@ var config = {
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 };
 
+// Create a new pool of database clients that can make requests
 const pool = new pg.Pool(config);
 
+// Log any database errors
 pool.on('error', function(err, client) {
     console.error("idle client error", err.message, err.stack);
 })
 
+// Expose the query function to all other files
 module.exports.query = function(text, values, callback) {
     return pool.query(text, values, callback);
 }

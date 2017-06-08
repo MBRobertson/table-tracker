@@ -6,20 +6,11 @@
   "scripts": {
     "start": "node app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://MBRobertson@gitlab.com/MBRobertson/interact-server.git"
-  },
   "author": "Michael Robertson",
   "license": "ISC",
-  "bugs": {
-    "url": "https://gitlab.com/MBRobertson/interact-server/issues"
-  },
-  "homepage": "https://gitlab.com/MBRobertson/interact-server#README",
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
-    "node-localdb": "0.0.3",
     "pg": "^6.1.5",
     "socket.io": "*"
   }
