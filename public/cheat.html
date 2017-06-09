@@ -10,10 +10,11 @@
 
         <style>
             a {
-                display: block;
+                display: inline-block;
+                width: 50%;
                 padding: 10px;
                 border: 1px solid black;
-                margin: 5px;
+                margin: 5px 0;
             }
         </style>
         
@@ -25,11 +26,19 @@
         <a href="#" id="deviceEnter-2">Enter 2</a>
         <a href="#" id="deviceEnter-3">Enter 3</a>
         <a href="#" id="deviceEnter-4">Enter 4</a>
+        <a href="#" id="deviceEnter-5">Enter 5/a>
+        <a href="#" id="deviceEnter-6">Enter 6</a>
+        <a href="#" id="deviceEnter-7">Enter 7</a>
+        <a href="#" id="deviceEnter-8">Enter 8</a>
 
-        <a href="#" id="deviceLeave-1">Enter Kiosk</a>
+        <a href="#" id="deviceLeave-1">Leave Kiosk</a>
         <a href="#" id="deviceLeave-2">Leave 2</a>
         <a href="#" id="deviceLeave-3">Leave 3</a>
         <a href="#" id="deviceLeave-4">Leave 4</a>
+        <a href="#" id="deviceLeave-5">Leave 5</a>
+        <a href="#" id="deviceLeave-6">Leave 6</a>
+        <a href="#" id="deviceLeave-7">Leave 7</a>
+        <a href="#" id="deviceLeave-8">Leave 8</a>
 
         <a href="#" id="reset">Reset</a>
 
@@ -67,6 +76,31 @@
                         type: 'GET'
                     })
                 });
+                $('#deviceEnter-5').click(function() {
+                    $.ajax({
+                        url: API_SERVER + '/api/enter/' + $('#name').val() + '/5',
+                        type: 'GET'
+                    })
+                });
+
+                $('#deviceEnter-6').click(function() {
+                    $.ajax({
+                        url: API_SERVER + '/api/enter/' + $('#name').val() + '/6',
+                        type: 'GET'
+                    })
+                });
+                $('#deviceEnter-7').click(function() {
+                    $.ajax({
+                        url: API_SERVER + '/api/enter/' + $('#name').val() + '/7',
+                        type: 'GET'
+                    })
+                });
+                $('#deviceEnter-8').click(function() {
+                    $.ajax({
+                        url: API_SERVER + '/api/enter/' + $('#name').val() + '/8',
+                        type: 'GET'
+                    })
+                });
 
                 $('#deviceLeave-1').click(function() {
                     $.ajax({
@@ -90,6 +124,32 @@
                 $('#deviceLeave-4').click(function() {
                     $.ajax({
                         url: API_SERVER + '/api/leave/' + $('#name').val() + '/4',
+                        type: 'GET'
+                    })
+                });
+
+                $('#deviceLeave-5').click(function() {
+                    $.ajax({
+                        url: API_SERVER + '/api/leave/' + $('#name').val() + '/5',
+                        type: 'GET'
+                    })
+                });
+
+                $('#deviceLeave-6').click(function() {
+                    $.ajax({
+                        url: API_SERVER + '/api/leave/' + $('#name').val() + '/6',
+                        type: 'GET'
+                    })
+                });
+                $('#deviceLeave-7').click(function() {
+                    $.ajax({
+                        url: API_SERVER + '/api/leave/' + $('#name').val() + '/7',
+                        type: 'GET'
+                    })
+                });
+                $('#deviceLeave-8').click(function() {
+                    $.ajax({
+                        url: API_SERVER + '/api/leave/' + $('#name').val() + '/8',
                         type: 'GET'
                     })
                 });
