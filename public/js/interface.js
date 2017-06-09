@@ -304,7 +304,7 @@ API.onDeviceUpdate(function(d) {
         if (Devices.deviceNearTable(Devices.kioskID) && state == STATES.NONE)
         {
             console.log("Nearby");
-            setState(STATES.NEARBY);
+            setState(STATES.NEARBY)
             Interface.redraw();
         }
         else if (state == STATES.NEARBY)
