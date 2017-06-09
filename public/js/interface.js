@@ -311,9 +311,9 @@ API.onDeviceUpdate(function(d) {
         {
             console.log("Not nearby");
             setState(STATES.NONE);
-            Interface.redraw();
         }
     }
+    Interface.redraw();
 })
 
 // Control the display of tables
