@@ -49,10 +49,6 @@ io.on('connection', function (socket) {
 // Trigger socket.io on database updates
 api.onBeaconUpdate(function(beaconData) {
     io.emit('tableupdate', beaconData);
-    db.getDevices(function(err, data) {
-
-        socket.emit('deviceupdate', data.rows);
-    })
 })
 
 api.onDeviceUpdate(function(deviceData) {
